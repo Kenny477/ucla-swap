@@ -22,6 +22,7 @@ export class AuthController {
 
   @Post('signup')
   async signup(@Req() req: Request) {
+    console.log(req)
     const { username, password } = req.body;
     return this.authService.signup({ username, password });
   }

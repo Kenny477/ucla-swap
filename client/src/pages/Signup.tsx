@@ -1,15 +1,29 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Signup() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
-	function onSignup() {
-    // Make a POST request to the server endpoint /users/signup with the username and password
-    const endpoint = '/users/signup'
-    const body = { username, password }
-  }
+  const navigate = useNavigate();
+
+	async function onSignup() {
+		// Make a POST request to the server endpoint /auth/signup with the username and password
+		const endpoint = "/api/auth/signup";
+		const body = { username, password };
+		console.log(JSON.stringify(body));
+		const res = await fetch(endpoint, {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json;charset=UTF-8",
+			},
+			body: JSON.stringify(body),
+		});
+    if(res.statusText === "Created") {
+      navigate('/check-email')
+    }
+	}
 
 	return (
 		<div className="flex flex-col items-center justify-center h-full space-y-8">
@@ -20,14 +34,14 @@ function Signup() {
 					placeholder="username"
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
-          className="focus:outline-0 focus:border-black border-b"
+					className="focus:outline-0 focus:border-black border-b"
 				/>
 				<input
 					type="password"
 					placeholder="password"
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
-          className="focus:outline-0 focus:border-black border-b"
+					className="focus:outline-0 focus:border-black border-b"
 				/>
 				<button
 					type="button"

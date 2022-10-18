@@ -7,9 +7,9 @@ function Nav() {
       <NavLink to="/" className="text-xl font-bold">UCLA Swap</NavLink>
       <div className="flex flex-row space-x-4 text-lg">
         <NavLink to="/">Home</NavLink>
+        <NavLink to="/feed">Feed</NavLink>
         <NavLink to="/login">Login</NavLink>
         <NavLink to="/signup">Signup</NavLink>
-        <NavLink to="/feed">Feed</NavLink>
       </div>
     </div>
   )

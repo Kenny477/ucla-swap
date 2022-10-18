@@ -8,6 +8,7 @@ import Feed from "./pages/Feed";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import NavLayout from "./layouts/NavLayout";
+import CheckEmail from "./pages/CheckEmail";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/feed" element={<Feed />} />
+					<Route path="/check-email" element={<CheckEmail />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
