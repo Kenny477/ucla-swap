@@ -7,6 +7,8 @@ import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
+import { Listing } from './listing/listing.entity';
+import { ListingModule } from './listing/listing.module';
 
 @Module({
   imports: [
@@ -18,11 +20,12 @@ import { MailModule } from './mail/mail.module';
       username: process.env.MYSQL_ROOT_USER,
       password: process.env.MYSQL_ROOT_PASSWORD,
       database: process.env.MYSQL_DATABASE,
-      entities: [User],
+      entities: [User, Listing],
       synchronize: true,
     }),
     UserModule,
     AuthModule,
+    ListingModule,
     MailModule,
   ],
   controllers: [AppController],
