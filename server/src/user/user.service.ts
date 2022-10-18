@@ -10,12 +10,44 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
+  async updateVerificationToken(userId: string, token: string): Promise<any> {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (user) {
+      const currentTime = new Date();
+      return this.userRepository
+        .createQueryBuilder()
+        .update({
+          emailVerified:
+            user?.verificationToken === token &&
+            (user?.verificationTokenExpires ?? currentTime) > currentTime,
+        })
+        .where({ id: userId })
+        .execute();
+    }
+    return null;
+  }
+
+  async addVerificationToken(
+    userId: string,
+    fields: { verificationToken: string; verificationTokenExpires: Date },
+  ): Promise<any> {
+    return this.userRepository
+      .createQueryBuilder()
+      .update(fields)
+      .where({ id: userId })
+      .execute();
+  }
+
   findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
 
-  findByUsername(username: string): Promise<User> {
-    return this.userRepository.findOneBy({ username });
+  findById(id: string): Promise<User> {
+    return this.userRepository.findOneBy({ id });
+  }
+
+  findByEmail(email: string): Promise<User> {
+    return this.userRepository.findOneBy({ email });
   }
 
   create(user: DeepPartial<User>): Promise<User> {

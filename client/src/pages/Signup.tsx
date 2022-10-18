@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 function Signup() {
-	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
 	async function onSignup() {
-		// Make a POST request to the server endpoint /auth/signup with the username and password
+		// Make a POST request to the server endpoint /auth/signup with the email and password
 		const endpoint = "/api/auth/signup";
-		const body = { username, password };
-		console.log(JSON.stringify(body));
+		const body = { email, password };
 		const res = await fetch(endpoint, {
 			method: "POST",
 			headers: {
@@ -31,9 +30,9 @@ function Signup() {
 			<div className="flex flex-col space-y-4 text-lg">
 				<input
 					type="text"
-					placeholder="username"
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
+					placeholder="email"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
 					className="focus:outline-0 focus:border-black border-b"
 				/>
 				<input

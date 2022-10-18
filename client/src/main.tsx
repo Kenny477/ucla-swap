@@ -9,6 +9,8 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import NavLayout from "./layouts/NavLayout";
 import CheckEmail from "./pages/CheckEmail";
+import EmailNotVerified from "./pages/EmailNotVerified";
+import EmailVerified from "./pages/EmailVerified";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
@@ -21,6 +23,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/feed" element={<Feed />} />
 					<Route path="/check-email" element={<CheckEmail />} />
+					<Route path='/email-verified' element={<EmailVerified />} />
+					<Route path='/email-not-verified' element={<EmailNotVerified />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
