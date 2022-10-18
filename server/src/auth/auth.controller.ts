@@ -1,8 +1,8 @@
 import { Get, Controller, Req, UseGuards, Post, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { AuthService } from 'src/auth/auth.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
+import { AuthService } from '../auth/auth.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
 
 @Controller({ path: 'auth' })
 export class AuthController {
@@ -13,8 +13,11 @@ export class AuthController {
   async login(@Req() req: Request, @Res() res: Response) {
     const { email } = req.user as any;
     const verified = await this.authService.isEmailVerified(email);
+    // console.log(verified)
     if (verified) {
-      return this.authService.login(req.user);
+      const access_token = await this.authService.login(req.user);
+      // console.log(access_token)
+      res.send(access_token)
     }
     else {
       res.redirect('/email-not-verified');
@@ -25,8 +28,10 @@ export class AuthController {
   async signup(@Req() req: Request) {
     const { email, password } = req.body;
 
+    await this.authService.checkCredentials(email);
+
     const user = await this.authService.signup({ email, password });
-    return this.authService.signup({ email, password });
+    return user;
   }
 
   @Get('verify')

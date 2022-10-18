@@ -32,6 +32,26 @@ export class AuthService {
     };
   }
 
+  async checkCredentials(email: string) {
+    const match = email.match(
+      /^[a-zA-Z0-9._-]+@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})$/,
+    );
+    if (!match) {
+      throw new HttpException('Invalid email', HttpStatus.BAD_REQUEST);
+    }
+    const validDomains = [
+      'ucla.edu',
+      'g.ucla.edu',
+    ]
+    if (!validDomains.includes(match[1])) {
+      throw new HttpException('Must be a UCLA email', HttpStatus.BAD_REQUEST);
+    }
+    const user = await this.userService.findByEmail(email);
+    if (!!user) {
+      throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+    }
+  }
+
   async signup(user: any) {
     const { email, password } = user;
     const hashedPassword = await hash(password, await genSalt());
@@ -43,7 +63,7 @@ export class AuthService {
 
     const verificationToken = await this.createVerificationToken(savedUser.id);
     const verificationLink = `http://localhost:5173/api/auth/verify?userId=${savedUser.id}&token=${verificationToken}`;
-    this.mailService.sendVerificationMail(savedUser.email, verificationLink)
+    this.mailService.sendVerificationMail(savedUser.email, verificationLink);
   }
 
   async isEmailVerified(email: string): Promise<boolean> {
@@ -60,9 +80,11 @@ export class AuthService {
     const verificationTokenHash = createHash('sha256')
       .update(userId + Date.now().toString())
       .digest('hex');
-    return this.userService.addVerificationToken(userId, {
-      verificationToken: verificationTokenHash,
-      verificationTokenExpires: new Date(Date.now() + 600000),
-    }).then(() => verificationTokenHash);
+    return this.userService
+      .addVerificationToken(userId, {
+        verificationToken: verificationTokenHash,
+        verificationTokenExpires: new Date(Date.now() + 600000),
+      })
+      .then(() => verificationTokenHash);
   }
 }

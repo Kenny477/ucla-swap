@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -11,18 +12,16 @@ function Login() {
     // Make a POST request to the server endpoint /users/signup with the email and password
     const endpoint = '/api/auth/login'
     const body = { email, password }
-		const res = await fetch(endpoint, {
-			method: "POST",
+		console.log('fetching', body)
+		const res = await axios.post(endpoint, body, {
 			headers: {
 				Accept: "application/json",
 				"Content-Type": "application/json;charset=UTF-8",
 			},
-			body: JSON.stringify(body),
 		});
-		console.log(res);
-    if(res.statusText === "Created") {
-      navigate('/feed')
-    }
+		if(res.status === 201) {
+			navigate('/feed')
+		}
   }
 
 	return (
