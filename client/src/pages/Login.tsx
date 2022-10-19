@@ -15,7 +15,6 @@ function Login() {
 		// Make a POST request to the server endpoint /users/signup with the email and password
 		const endpoint = "/api/auth/login";
 		const body = { email, password };
-		console.log("fetching", body);
 		const res = await axios
 			.post(endpoint, body, {
 				headers: {

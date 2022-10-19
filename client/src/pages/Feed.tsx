@@ -1,14 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FaSearch, FaPlus } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import ListingPreview from "../components/ListingPreview";
+import { debounce } from "lodash";
+import { Listing } from "../types";
 
 function Feed() {
-	const [listings, setListings] = useState<any[]>([]);
+	const categories: Listing["category"][] = [
+		"Books",
+		"Electronics",
+		"Furniture",
+		"Clothing",
+		"Vehicles",
+		"Other",
+	];
+	const [selected, setSelected] = useState<{ [key: string]: boolean }>(
+		categories.reduce((acc, curr) => ({ ...acc, [curr]: true }), {})
+	);
+	const [listings, setListings] = useState<Listing[]>([]);
 	const [search, setSearch] = useState("");
 
-  const [cookies, setCookie] = useCookies();
+	const [cookies, setCookie] = useCookies();
+
+	function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+		setSearch(e.target.value);
+		console.log(e.target.value);
+	}
+	const debouncedSearch = useMemo(() => {
+		return debounce(handleSearch, 300);
+	}, []);
+
+	useEffect(() => debouncedSearch.cancel());
+
+	function handleFilter(listing: Listing) {
+		const searchInDescription = listing.description
+			.toLowerCase()
+			.includes(search.toLowerCase());
+		const searchInTitle = listing.title
+			.toLowerCase()
+			.includes(search.toLowerCase());
+
+		const selectedCategories = Object.keys(selected).filter(
+			(category) => selected[category]
+		);
+		if (selectedCategories)
+			return selectedCategories.includes(listing.category) && (searchInDescription || searchInTitle);
+		return searchInDescription || searchInTitle;
+	}
 
 	useEffect(() => {
 		const endpoint = "/api/listing";
@@ -22,7 +62,7 @@ function Feed() {
 			.then((res) => {
 				setListings(res.data);
 			});
-	});
+	}, []);
 
 	return (
 		<div className="grid grid-cols-4 grid-rows-6 px-20 h-full">
@@ -42,29 +82,50 @@ function Feed() {
 					<div className="flex flex-row justify-between items-center space-x-4">
 						<input
 							type="text"
-							value={search}
-							onChange={(e) => setSearch(e.target.value)}
+							onChange={debouncedSearch}
 							className="focus:outline-0 border-b focus:border-primary_darker border-primary_lighter w-full"
 						/>
-						<FaSearch className="text-primary_lighter hover:text-primary_darker hover:cursor-pointer h-6 w-6" />
+						<FaSearch className="text-primary_lighter hover:text-primary_darker cursor-pointer h-6 w-6" />
 					</div>
 				</div>
 				<div>
 					<h2 className="text-lg">Categories</h2>
-					<input
-						type="checkbox"
-						id="category1"
-						name="category1"
-						value="category1"
-					/>
-					<label htmlFor="category1">Category 1</label>
+					{categories.map((category: string) => (
+						<div
+							key={category}
+							className="flex flex-row justify-start items-center space-x-2 w-full text-lg"
+						>
+							<input
+								type="checkbox"
+								id={`category_${category}`}
+								name={`category_${category}`}
+								checked={selected[category]}
+								onChange={() =>
+									setSelected({
+										...selected,
+										[category]: !selected[category],
+									})
+								}
+								className="h-4 w-4"
+							/>
+							<label htmlFor={`category_${category}`}>
+								{category}
+							</label>
+						</div>
+					))}
 				</div>
 			</div>
-			<div className="col-span-3 row-span-5">
-				<h1>Right</h1>
-				{listings.map((listing) => {
-					return <div>{listing.title}</div>;
-				})}
+			<div className="col-span-3 row-span-5 overflow-y-scroll grid grid-cols-2 gap-4 px-4">
+				{listings
+					.filter((listing) => handleFilter(listing))
+					.map((listing) => {
+						return (
+							<ListingPreview
+								key={listing.id}
+								listing={listing}
+							/>
+						);
+					})}
 			</div>
 		</div>
 	);

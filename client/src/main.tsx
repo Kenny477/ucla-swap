@@ -13,6 +13,8 @@ import EmailNotVerified from "./pages/EmailNotVerified";
 import EmailVerified from "./pages/EmailVerified";
 import NewListing from "./pages/NewListing";
 import { CookiesProvider } from "react-cookie";
+import Listing from "./pages/Listing";
+import Profile from "./pages/Profile";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
@@ -23,8 +25,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 						<Route index element={<Home />} />
 						<Route path="/home" element={<Home />} />
 						<Route path="/login" element={<Login />} />
+						<Route path="/profile" element={<Profile />} />
 						<Route path="/signup" element={<Signup />} />
 						<Route path="/feed" element={<Feed />} />
+						<Route path="/listing/:id" element={<Listing />} />
 						<Route path="/new-listing" element={<NewListing />} />
 						<Route path="/check-email" element={<CheckEmail />} />
 						<Route

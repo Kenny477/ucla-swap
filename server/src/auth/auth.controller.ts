@@ -28,7 +28,7 @@ export class AuthController {
   async signup(@Req() req: Request) {
     const { email, password } = req.body;
 
-    await this.authService.checkCredentials(email);
+    await this.authService.checkCredentials(email, password);
 
     const user = await this.authService.signup({ email, password });
     return user;

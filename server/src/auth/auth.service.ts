@@ -32,7 +32,8 @@ export class AuthService {
     };
   }
 
-  async checkCredentials(email: string) {
+  async checkCredentials(email: string, password: string) {
+    // Email checks
     const match = email.match(
       /^[a-zA-Z0-9._-]+@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})$/,
     );
@@ -49,6 +50,19 @@ export class AuthService {
     const user = await this.userService.findByEmail(email);
     if (!!user) {
       throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+    }
+    // Password checks
+    if(password.length < 8) {
+      throw new HttpException('Password must be at least 8 characters', HttpStatus.BAD_REQUEST);
+    }
+    if(![...password].some(char => char === char.toUpperCase())) {
+      throw new HttpException('Password must contain at least one uppercase letter', HttpStatus.BAD_REQUEST);
+    }
+    if(![...password].some(char => char === char.toLowerCase())) {
+      throw new HttpException('Password must contain at least one lowercase letter', HttpStatus.BAD_REQUEST);
+    }
+    if(![...password].some(char => !isNaN(parseInt(char)))) {
+      throw new HttpException('Password must contain at least one number', HttpStatus.BAD_REQUEST);
     }
   }
 
