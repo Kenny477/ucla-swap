@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FaSearch, FaPlus } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useCookies } from "react-cookie";
 import ListingPreview from "../components/ListingPreview";
 import { debounce } from "lodash";
@@ -59,13 +59,13 @@ function Feed() {
 					Authorization: `Bearer ${cookies.access_token}`,
 				},
 			})
-			.then((res) => {
+			.then((res: AxiosResponse) => {
 				setListings(res.data);
 			});
 	}, []);
 
 	return (
-		<div className="grid grid-cols-4 grid-rows-6 px-20 h-full">
+		<div className="grid grid-cols-4 grid-rows-6 px-20 h-full pb-10">
 			<div className="col-span-4 row-span-1 flex flex-row justify-center items-center py-4">
 				<h1 className="text-lg">Feed</h1>
 				<NavLink
