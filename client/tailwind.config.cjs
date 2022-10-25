@@ -14,7 +14,7 @@ module.exports = {
         secondary_darker: '#FFC72C', // UCLA Darker Gold
       },
       backgroundImage: {
-        students: "url('/src/assets/images/students-upscaled.jpeg')",
+        students: "url('/assets/images/students-upscaled.jpeg')",
       }
     },
     fontFamily: {
