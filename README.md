@@ -4,7 +4,16 @@ A student peer-to-peer marketplace for buying, selling, and trading goods and se
 
 ## Getting Started
 
-Follow the following instructions to run the frontend and backend for the web application.
+Follow these instructions to run the frontend and backend for the web application.
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/en/download/): v16 or newer
+  - See [Downloading and installing Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) for more instructions]
+  - Comes with NPM which we use to manage all our packages
+- [Docker](https://docs.docker.com/get-docker/):
+  - See [Get started](https://docs.docker.com/get-started/) for documentation
+  - Used for backend containerization of SQL container to allow us to run SQL server on any platform (Windows, Mac, Linux)
 
 ### Frontend Development
 
@@ -18,7 +27,10 @@ Follow the following instructions to run the frontend and backend for the web ap
 1. Enter the backend root directory (/server)
 2. Run `npm install` to install all dependencies
 3. Run `npm run dev` to start the backend NestJS server in development mode
-    1. Note: This is an alias of the default npm script for the dev server `npm run start:dev`
+    1. Note: This also starts the development Docker container for the SQL database.
+    2. To run each part separately use:
+        1. `npm run start:dev` to start the NestJS server
+        2. `npm run docker:run` to start the SQL Docker container (which is an alias of `docker-compose up -f docker.compose.yml -d`).
 4. The backend should be running on [localhost:4000](http://localhost:4000)
 
 #### Useful Commands for Backend Development
