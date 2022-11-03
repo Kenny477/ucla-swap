@@ -9,11 +9,10 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { DeepPartial } from 'typeorm';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { Listing } from './listing.entity';
 import { ListingService } from './listing.service';
 import { Request } from 'express';
+import { CreateListingDto } from './dto/create-listing.dto';
 
 @Controller('listing')
 export class ListingController {
@@ -32,7 +31,7 @@ export class ListingController {
 
   @Post('create')
   @UseGuards(JwtAuthGuard)
-  createForUser(@Req() req: Request, @Body() listing: DeepPartial<Listing>) {
+  createForUser(@Req() req: Request, @Body() listing: CreateListingDto) {
     if (listing.title.length < 4) {
       throw new HttpException(
         'Title must be at least 4 characters long',

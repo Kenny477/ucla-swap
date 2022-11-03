@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } from 'typeorm';
-import { User } from '../user/user.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, OneToMany } from 'typeorm';
+import { User } from '../../user/entities/user.entity';
+import { File } from '../../file/entities/file.entity';
 
 @Entity()
 export class Listing {
@@ -30,6 +31,6 @@ export class Listing {
   @ManyToOne(() => User, (user) => user.listings)
   user: User;
 
-  // @Column()
-  // images: string[];
+  @OneToMany(() => File, (file) => file.listing)
+  files: File[];
 }
