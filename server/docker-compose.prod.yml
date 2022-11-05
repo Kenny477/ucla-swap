@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file:
-      - .env
+      - .env.prod
     depends_on:
       db:
         condition: service_healthy
@@ -23,8 +23,8 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - $PWD/Caddyfile:/etc/caddy/Caddyfile
-      - $PWD/../client/dist:/usr/share/caddy/client
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ../client/dist:/usr/share/caddy/client
       - /home/ubuntu/caddy/data:/data
       - /home/ubuntu/caddy/config:/config
 

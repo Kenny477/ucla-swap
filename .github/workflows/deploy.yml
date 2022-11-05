@@ -50,13 +50,15 @@ jobs:
     - name: 'Copy server files to gcloud'
       run: |
         cd server
-        docker build -t ucla_swap_api .
+        docker build --no-cache -t ucla_swap_api .
         docker save -o ucla_swap_api.tar ucla_swap_api
+        gzip ucla_swap_api.tar
 
-        gcloud compute scp --zone=us-west2-a ucla_swap_api.tar 2883539096079705327:server/
-        gcloud compute scp --zone=us-west2-a Caddyfile docker-compose.prod.yml docker-compose.yml 2883539096079705327:server/
-    
+        gcloud compute scp --zone=us-west2-a ucla_swap_api.tar.gz 2883539096079705327:server/
+        gcloud compute scp --zone=us-west2-a Caddyfile .env docker-compose.prod.yml docker-compose.yml 2883539096079705327:server/
+        gcloud compute ssh 2883539096079705327 --zone=us-west2-a --command="rm server/ucla_swap_api.tar; gzip -d server/ucla_swap_api.tar.gz"
+        gcloud compute ssh 2883539096079705327 --zone=us-west2-a --command="sudo docker load -i server/ucla_swap_api.tar"
     - name: 'Restart Docker stack'
       run: |
-        gcloud compute ssh 2883539096079705327 --zone=us-west2-a --command="docker-compose -f docker-compose.yml -f docker-compose.prod.yml down && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d""
+        gcloud compute ssh 2883539096079705327 --zone=us-west2-a --command="sudo docker compose -f server/docker-compose.yml -f server/docker-compose.prod.yml down; sudo docker compose -f server/docker-compose.yml -f server/docker-compose.prod.yml up -d"
         
