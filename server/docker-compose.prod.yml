@@ -1,24 +1,6 @@
 version: "3.9"
 
 services:  
-  db:
-    image: mysql:8.0
-    container_name: ucla_swap_sql
-    env_file:
-      - .env
-    command: --default_authentication_plugin=mysql_native_password
-    restart: always
-    ports:
-      - 3306:3306
-    volumes:
-      - dockerdb:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      interval: 15s
-      timeout: 30s
-      retries: 8
-      start_period: 30s
-
   api:
     image: ucla_swap_api
     container_name: ucla_swap_api
@@ -33,5 +15,20 @@ services:
     ports:
       - 4000:4000
 
+  caddy:
+    image: caddy:2.6.2-alpine
+    container_name: ucla_swap_caddy
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - $PWD/Caddyfile:/etc/caddy/Caddyfile
+      - $PWD/../client/dist:/usr/share/caddy/client
+      - /home/ubuntu/caddy/data:/data
+      - /home/ubuntu/caddy/config:/config
+
 volumes:
+  caddy_data:
+  caddy_config:
   dockerdb:

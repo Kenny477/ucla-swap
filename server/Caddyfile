@@ -1,0 +1,28 @@
+
+swap.yoru.app {
+    log {
+        output stdout
+    }
+    encode gzip
+
+    @frontend {
+        not {
+            path /api/*
+        }
+    }
+
+    @try_files {
+        not path /api/*
+        file {
+            try_files {path} {path}/ /index.html
+        }
+    }
+    rewrite @try_files {http.matchers.file.relative}
+
+    handle_path /api/* {
+        reverse_proxy ucla_swap_api:4000
+    }
+
+    root * /usr/share/caddy/client
+    file_server @frontend
+}

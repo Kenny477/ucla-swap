@@ -1,0 +1,62 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.15.x]
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - uses: actions/checkout@v3
+      name: Use Node.js ${{ matrix.node-version }}
+    
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        workload_identity_provider: '${{ secrets.GCP_WIP }}'
+        service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+        
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v0'
+
+    - name: 'Use gcloud CLI'
+      run: 'gcloud info'
+
+    - name: 'Copy client files to gcloud'
+      run: |
+        cd client
+        npm ci
+        npm run build
+
+        gcloud compute ssh 2883539096079705327 --zone=us-west2-a --command="rm -r client/dist; mkdir client/dist"  
+        gcloud compute scp --recurse --zone=us-west2-a dist/ 2883539096079705327:client/dist
+    
+    - name: 'Copy server files to gcloud'
+      run: |
+        cd server
+        docker build -t ucla_swap_api .
+        docker save -o ucla_swap_api.tar ucla_swap_api
+
+        gcloud compute scp --zone=us-west2-a ucla_swap_api.tar 2883539096079705327:server/
+        gcloud compute scp --zone=us-west2-a Caddyfile docker-compose.prod.yml docker-compose.yml 2883539096079705327:server/
+    
+    - name: 'Restart Docker stack'
+      run: |
+        gcloud compute ssh 2883539096079705327 --zone=us-west2-a --command="docker-compose -f docker-compose.yml -f docker-compose.prod.yml down && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d""
+        
