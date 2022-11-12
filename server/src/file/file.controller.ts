@@ -12,6 +12,7 @@ import {
   MaxFileSizeValidator,
   FileTypeValidator,
   UploadedFiles,
+  Req,
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { CreateFileDto } from './dto/create-file.dto';
@@ -22,7 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Controller('file')
 export class FileController {
-  constructor(private readonly fileService: FileService) {}
+  constructor(private readonly fileService: FileService) { }
 
   @Post()
   @UseInterceptors(
@@ -45,12 +46,15 @@ export class FileController {
       // }),
     )
     files: Array<Express.Multer.File>,
+    @Body() body: { listingId: string },
   ) {
+    console.log(body.listingId);
     const fileInfos: CreateFileDto[] = files.map((file) => {
       return {
         filename: file.filename,
         size: file.size,
         mimetype: file.mimetype,
+        listing: { id: body.listingId },
       };
     });
     return this.fileService.create(fileInfos);

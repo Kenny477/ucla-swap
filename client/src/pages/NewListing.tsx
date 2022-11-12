@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios, { AxiosPromise } from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { Listing } from "../types";
+import { Listing, ImageFile } from "../types";
 import { FaAngleDown } from "react-icons/fa";
 import { HiPhotograph } from "react-icons/hi";
-import ImageUpload from "../components/ImageUpload";
+import ImageUpload, { ImageWithPreview } from "../components/ImageUpload";
 
 function NewListing() {
 	const categories: Listing["category"][] = [
@@ -20,6 +20,7 @@ function NewListing() {
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [price, setPrice] = useState(0);
+	const [images, setImages] = useState<ImageWithPreview[]>([]);
 	const [category, setCategory] = useState("Choose a category");
 	const [cookies, setCookie] = useCookies();
 	const [error, setError] = useState("");
@@ -28,11 +29,47 @@ function NewListing() {
 
 	const navigate = useNavigate();
 
+	async function upload(listingId: Listing["id"]) {
+		const endpoint = "/api/file";
+		const formData = new FormData();
+		formData.append("listingId", listingId);
+		const imagesWithListing = images.map((image) =>
+			Object.assign(image, { listingId })
+		);
+		imagesWithListing.forEach((image) => {
+			formData.append("file", image);
+		});
+		return axios
+			.post(endpoint, formData, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			})
+	}
+
+	const thumbnails = images.map((file) => (
+		<div className="" key={file.name}>
+			<div className="">
+				<img
+					src={file.preview}
+					alt={file.name}
+					className="h-6"
+					// Revoke data uri after image is loaded
+					onLoad={() => {
+						URL.revokeObjectURL(file.preview);
+					}}
+				/>
+			</div>
+		</div>
+	));
+
 	async function handlePost() {
 		const endpoint = "/api/listing/create";
 		const data = {
 			title,
 			description,
+			price,
+			category,
 		};
 		const res = await axios
 			.post(endpoint, data, {
@@ -41,8 +78,9 @@ function NewListing() {
 					Authorization: `Bearer ${cookies.access_token}`,
 				},
 			})
-			.then((res) => {
+			.then(async (res) => {
 				// console.log(res);
+				const files = await upload(res.data.id);
 				setError("");
 				navigate(`/listing/${res.data.id}`);
 			})
@@ -56,6 +94,15 @@ function NewListing() {
 
 	function handleImage() {
 		setShowImageUpload(true);
+	}
+
+	function addImages(newImages: ImageWithPreview[]) {
+		const newImagesWithPreview = newImages.map((image) =>
+			Object.assign(image, {
+				preview: URL.createObjectURL(image),
+			})
+		);
+		setImages([...images, ...newImagesWithPreview]);
 	}
 
 	return (
@@ -111,9 +158,8 @@ function NewListing() {
 						categories.map((c) => (
 							<div
 								key={c}
-								className={`p-2 ${
-									c === category ? "bg-slate-200" : "bg-white"
-								} border-[0.5px] border-b-slate-200`}
+								className={`p-2 ${c === category ? "bg-slate-200" : "bg-white"
+									} border-[0.5px] border-b-slate-200`}
 								onClick={() => {
 									setCategory(c);
 									setShowDropdown(false);
@@ -133,7 +179,10 @@ function NewListing() {
 						<p>Upload Image</p>
 					</button>
 				</div>
-				<div className="col-span-2 row-span-1 justify-self-center">
+				<div className="col-span-1 row-span-1">
+					{thumbnails}
+				</div>
+				<div className="col-span-1 row-span-1 justify-self-center">
 					<p className="text-red-600">{error}</p>
 				</div>
 				<div className="col-span-1 row-span-1 justify-self-end">
@@ -147,7 +196,7 @@ function NewListing() {
 				</div>
 			</div>
 			{showImageUpload && (
-				<ImageUpload setShowImageUpload={setShowImageUpload} />
+				<ImageUpload setShowImageUpload={setShowImageUpload} addImages={addImages} />
 			)}
 		</>
 	);

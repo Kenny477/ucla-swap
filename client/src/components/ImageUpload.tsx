@@ -2,29 +2,22 @@ import axios from "axios";
 import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
+export type ImageWithPreview = File & {
+	preview: string;
+}
+
 function ImageUpload({
+	addImages,
 	setShowImageUpload,
 }: {
+	addImages: (images: ImageWithPreview[]) => void;
 	setShowImageUpload: (showImageUpload: boolean) => void;
 }) {
-	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
+	const [files, setFiles] = useState<ImageWithPreview[]>([]);
 
-	async function handleUpload() {
-		const endpoint = "/api/file";
-		const formData = new FormData();
-		files.forEach((file) => {
-			formData.append("file", file);
-		});
-		const res = await axios
-			.post(endpoint, formData, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			})
-			.then((res) => {
-				console.log(res);
-				setShowImageUpload(false);
-			});
+	function handleUpload() {
+		addImages(files);
+		setShowImageUpload(false);
 	}
 
 	const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -48,6 +41,7 @@ function ImageUpload({
 			<div className="">
 				<img
 					src={file.preview}
+					alt={file.name}
 					className="h-6"
 					// Revoke data uri after image is loaded
 					onLoad={() => {

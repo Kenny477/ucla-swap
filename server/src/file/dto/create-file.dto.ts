@@ -1,4 +1,5 @@
 import { IsNumber, IsString } from 'class-validator';
+import { CreateListingDto } from 'src/listing/dto/create-listing.dto';
 
 export class CreateFileDto {
   @IsString()
@@ -9,4 +10,6 @@ export class CreateFileDto {
 
   @IsNumber()
   size: number;
+
+  listing: { id: string };
 }
