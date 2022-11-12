@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany } from 'typeorm';
 import { Listing } from '../../listing/entities/listing.entity';
 
 @Entity()
@@ -39,4 +39,7 @@ export class User {
 
   @OneToMany(() => Listing, (listing) => listing.user)
   listings: Listing[];
+
+  @ManyToMany(() => Listing, (listing) => listing.userLikes)
+  likedListings: Listing[];
 }

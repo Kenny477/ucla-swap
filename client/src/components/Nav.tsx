@@ -24,7 +24,7 @@ function Nav({ authenticated }: { authenticated: boolean }) {
 				{authenticated ? (
 					<>
 						<NavLink to="/feed">Feed</NavLink>
-						<NavLink to="/profile">Profile</NavLink>
+						{/* <NavLink to="/profile">Profile</NavLink> */}
 						<p onClick={handleLogout} className="cursor-pointer">
 							Logout
 						</p>

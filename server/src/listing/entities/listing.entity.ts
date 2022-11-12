@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, OneToMany, ManyToMany } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { File } from '../../file/entities/file.entity';
 
@@ -33,4 +33,7 @@ export class Listing {
 
   @OneToMany(() => File, (file) => file.listing)
   files: File[];
+
+  @ManyToMany(() => User, (user) => user.likedListings)
+  userLikes: User[];
 }
