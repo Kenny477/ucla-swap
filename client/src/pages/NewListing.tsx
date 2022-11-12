@@ -88,12 +88,14 @@ function NewListing() {
 				<div className="col-span-1 col-start-4 row-start-2 row-span-1 flex flex-col space-y-2">
 					<label htmlFor="price">Price</label>
 					<input
-						type="text"
+						type="number"
 						id="price"
+						min="0.00"
+						step="0.01"
 						name="title"
 						className="w-full focus:outline-0 rounded-md p-2"
 						value={price}
-						onChange={(e) => setPrice(parseFloat(e.target.value))}
+						onChange={(e) => setPrice(+e.target.valueAsNumber.toFixed(2))}
 					/>
 				</div>
 				<div className="col-span-1 col-start-4 row-start-3 row-span-3 flex flex-col focus:outline-none select-none ">
