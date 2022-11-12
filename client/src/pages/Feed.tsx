@@ -82,6 +82,7 @@ function Feed() {
 					<div className="flex flex-row justify-between items-center space-x-4">
 						<input
 							type="text"
+							title="search"
 							onChange={debouncedSearch}
 							className="focus:outline-0 border-b focus:border-primary_darker border-primary_lighter w-full"
 						/>
@@ -106,7 +107,7 @@ function Feed() {
 										[category]: !selected[category],
 									})
 								}
-								className="h-4 w-4"
+								className="h-4 w-4 accent-primary"
 							/>
 							<label htmlFor={`category_${category}`}>
 								{category}

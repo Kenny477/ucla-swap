@@ -48,12 +48,6 @@ export class AuthController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Req() req: Request) {
-    return req.user;
-  }
-
   @Post('forgot-password')
   async forgotPassword(@Req() req: Request, @Res() res: Response) {
     const { email } = req.body;

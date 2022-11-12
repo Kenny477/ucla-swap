@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
+import jwt_decode, { JwtPayload } from 'jwt-decode';
 import Home from "./pages/Home";
 import Feed from "./pages/Feed";
 import Signup from "./pages/Signup";
@@ -19,14 +20,28 @@ import NotFound from './pages/NotFound';
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
   const [authenticated, setAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setAuthenticated(!!cookies.access_token);
+    if (cookies.access_token) {
+      const decoded = jwt_decode<JwtPayload>(cookies.access_token);
+      if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+        removeCookie('access_token');
+        navigate('/login');
+        setAuthenticated(false);
+      }
+      else {
+        setAuthenticated(true);
+      }
+    }
+    else {
+      setAuthenticated(false);
+    }
   }, [cookies.access_token]);
 
   return (
     <Routes>
-      <Route path="/" element={<NavLayout authenticated={authenticated}/>}>
+      <Route path="/" element={<NavLayout authenticated={authenticated} />}>
         <Route index element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
