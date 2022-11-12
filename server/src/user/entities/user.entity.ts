@@ -27,6 +27,16 @@ export class User {
   })
   verificationTokenExpires: Date;
 
+  @Column({
+    default: null,
+  })
+  resetToken: string;
+
+  @Column({
+    default: null,
+  })
+  resetTokenExpires: Date;
+
   @OneToMany(() => Listing, (listing) => listing.user)
   listings: Listing[];
 }

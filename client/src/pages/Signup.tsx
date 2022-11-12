@@ -5,14 +5,15 @@ import axios from "axios";
 function Signup() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
 	const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
-	async function onSignup() {
+	async function signup() {
 		// Make a POST request to the server endpoint /auth/signup with the email and password
 		const endpoint = "/api/auth/signup";
-		const body = { email, password };
+		const body = { email, password, confirmPassword };
 		const res = await axios.post(endpoint, body, {
 			headers: {
 				Accept: "application/json",
@@ -27,6 +28,14 @@ function Signup() {
 				setError(err.response.data.message)
 			}
 		});
+	}
+
+	async function onSignup() {
+		if (password !== confirmPassword) {
+			setError("Passwords do not match");
+		} else {
+			signup();
+		}
 	}
 
 	return (
@@ -45,6 +54,13 @@ function Signup() {
 					placeholder="password"
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
+					className="focus:outline-0 focus:border-black border-b"
+				/>
+				<input
+					type="password"
+					placeholder="confirm password"
+					value={confirmPassword}
+					onChange={(e) => setConfirmPassword(e.target.value)}
 					className="focus:outline-0 focus:border-black border-b"
 				/>
 				<button

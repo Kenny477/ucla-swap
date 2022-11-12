@@ -53,4 +53,16 @@ export class AuthController {
   getProfile(@Req() req: Request) {
     return req.user;
   }
+
+  @Post('forgot-password')
+  async forgotPassword(@Req() req: Request, @Res() res: Response) {
+    const { email } = req.body;
+    const user = await this.authService.forgotPassword(email);
+  }
+
+  @Post('reset-password')
+  async resetPassword(@Req() req: Request, @Res() res: Response) {
+    const { token, password } = req.body;
+    const user = await this.authService.resetPassword(token, password);
+  }
 }

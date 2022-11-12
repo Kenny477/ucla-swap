@@ -15,6 +15,8 @@ import NewListing from "./pages/NewListing";
 import { CookiesProvider } from "react-cookie";
 import Listing from "./pages/Listing";
 import Profile from "./pages/Profile";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
@@ -31,6 +33,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 						<Route path="/listing/:id" element={<Listing />} />
 						<Route path="/new-listing" element={<NewListing />} />
 						<Route path="/check-email" element={<CheckEmail />} />
+						<Route path="/forgot-password" element={<ForgotPassword />} />
+						<Route path="/reset-password" element={<ResetPassword />} />
 						<Route
 							path="/email-verified"
 							element={<EmailVerified />}
