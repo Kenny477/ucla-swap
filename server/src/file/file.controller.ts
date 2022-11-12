@@ -48,7 +48,6 @@ export class FileController {
     files: Array<Express.Multer.File>,
     @Body() body: { listingId: string },
   ) {
-    console.log(body.listingId);
     const fileInfos: CreateFileDto[] = files.map((file) => {
       return {
         filename: file.filename,
