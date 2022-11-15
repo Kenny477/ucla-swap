@@ -23,7 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Controller('file')
 export class FileController {
-  constructor(private readonly fileService: FileService) { }
+  constructor(private readonly fileService: FileService) {}
 
   @Post()
   @UseInterceptors(
@@ -37,15 +37,14 @@ export class FileController {
     }),
   )
   create(
-    @UploadedFiles(
-      // new ParseFilePipe({
-      //   validators: [
-      //     new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 10 }), // 10MB
-      //     new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ }),
-      //   ],
-      // }),
-    )
-    files: Array<Express.Multer.File>,
+    @UploadedFiles()
+    files: // new ParseFilePipe({
+    //   validators: [
+    //     new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 10 }), // 10MB
+    //     new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ }),
+    //   ],
+    // }),
+    Array<Express.Multer.File>,
     @Body() body: { listingId: string },
   ) {
     const fileInfos: CreateFileDto[] = files.map((file) => {

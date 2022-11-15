@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 
@@ -9,7 +9,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) { }
+  ) {}
 
   async updateVerificationToken(userId: string, token: string): Promise<any> {
     const user = await this.userRepository.findOneBy({ id: userId });
@@ -39,16 +39,19 @@ export class UserService {
       .execute();
   }
 
-  async addResetToken(userId: string, fields: {
-    resetToken: string;
-    resetTokenExpires: Date;
-  }): Promise<any> {
+  async addResetToken(
+    userId: string,
+    fields: {
+      resetToken: string;
+      resetTokenExpires: Date;
+    },
+  ): Promise<any> {
     return this.userRepository
       .createQueryBuilder()
       .update(fields)
       .where({ id: userId })
       .execute();
-  };
+  }
 
   updatePassword(id: string, password: string): Promise<any> {
     return this.userRepository

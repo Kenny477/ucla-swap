@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, OneToMany, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  OneToMany,
+  ManyToMany,
+} from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { File } from '../../file/entities/file.entity';
 
@@ -13,11 +21,9 @@ export class Listing {
   @Column('longtext')
   description: string;
 
-  @Column(
-    {
-      default: 0,
-    }
-  )
+  @Column({
+    default: 0,
+  })
   price: number;
 
   @CreateDateColumn()

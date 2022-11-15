@@ -11,7 +11,7 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private mailService: MailService,
-  ) { }
+  ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.userService.findByEmail(email);
@@ -40,10 +40,7 @@ export class AuthService {
     if (!match) {
       throw new HttpException('Invalid email', HttpStatus.BAD_REQUEST);
     }
-    const validDomains = [
-      'ucla.edu',
-      'g.ucla.edu',
-    ]
+    const validDomains = ['ucla.edu', 'g.ucla.edu'];
     if (!validDomains.includes(match[1])) {
       throw new HttpException('Must be a UCLA email', HttpStatus.BAD_REQUEST);
     }
@@ -53,16 +50,28 @@ export class AuthService {
     }
     // Password checks
     if (password.length < 8) {
-      throw new HttpException('Password must be at least 8 characters', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Password must be at least 8 characters',
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    if (![...password].some(char => char === char.toUpperCase())) {
-      throw new HttpException('Password must contain at least one uppercase letter', HttpStatus.BAD_REQUEST);
+    if (![...password].some((char) => char === char.toUpperCase())) {
+      throw new HttpException(
+        'Password must contain at least one uppercase letter',
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    if (![...password].some(char => char === char.toLowerCase())) {
-      throw new HttpException('Password must contain at least one lowercase letter', HttpStatus.BAD_REQUEST);
+    if (![...password].some((char) => char === char.toLowerCase())) {
+      throw new HttpException(
+        'Password must contain at least one lowercase letter',
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    if (![...password].some(char => !isNaN(parseInt(char)))) {
-      throw new HttpException('Password must contain at least one number', HttpStatus.BAD_REQUEST);
+    if (![...password].some((char) => !isNaN(parseInt(char)))) {
+      throw new HttpException(
+        'Password must contain at least one number',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -111,11 +120,10 @@ export class AuthService {
       .update(user.id + user.password + Date.now().toString())
       .digest('hex');
     const resetTokenExpires = new Date(Date.now() + 600000);
-    this.userService
-      .addResetToken(user.id, {
-        resetToken: resetToken,
-        resetTokenExpires: resetTokenExpires,
-      })
+    this.userService.addResetToken(user.id, {
+      resetToken: resetToken,
+      resetTokenExpires: resetTokenExpires,
+    });
     const resetLink = `http://${process.env.APP_HOST}/reset-password?token=${resetToken}`;
     this.mailService.sendPasswordResetMail(user.email, resetLink);
   }
@@ -130,16 +138,28 @@ export class AuthService {
     }
     // Password checks
     if (password.length < 8) {
-      throw new HttpException('Password must be at least 8 characters', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Password must be at least 8 characters',
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    if (![...password].some(char => char === char.toUpperCase())) {
-      throw new HttpException('Password must contain at least one uppercase letter', HttpStatus.BAD_REQUEST);
+    if (![...password].some((char) => char === char.toUpperCase())) {
+      throw new HttpException(
+        'Password must contain at least one uppercase letter',
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    if (![...password].some(char => char === char.toLowerCase())) {
-      throw new HttpException('Password must contain at least one lowercase letter', HttpStatus.BAD_REQUEST);
+    if (![...password].some((char) => char === char.toLowerCase())) {
+      throw new HttpException(
+        'Password must contain at least one lowercase letter',
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    if (![...password].some(char => !isNaN(parseInt(char)))) {
-      throw new HttpException('Password must contain at least one number', HttpStatus.BAD_REQUEST);
+    if (![...password].some((char) => !isNaN(parseInt(char)))) {
+      throw new HttpException(
+        'Password must contain at least one number',
+        HttpStatus.BAD_REQUEST,
+      );
     }
     const hashedPassword = await hash(password, await genSalt());
     this.userService.updatePassword(user.id, hashedPassword);

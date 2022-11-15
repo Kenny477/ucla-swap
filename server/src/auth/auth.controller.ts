@@ -1,7 +1,6 @@
 import { Get, Controller, Req, UseGuards, Post, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthService } from '../auth/auth.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
 
 @Controller({ path: 'auth' })
@@ -17,9 +16,8 @@ export class AuthController {
     if (verified) {
       const access_token = await this.authService.login(req.user);
       // console.log(access_token)
-      res.send(access_token)
-    }
-    else {
+      res.send(access_token);
+    } else {
       res.redirect('/email-not-verified');
     }
   }

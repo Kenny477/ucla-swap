@@ -4,10 +4,9 @@ import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class MailService {
-
   private SERVICE_EMAIL: string;
 
-  constructor(private readonly httpService: HttpService){
+  constructor(private readonly httpService: HttpService) {
     this.SERVICE_EMAIL = 'swapucla@gmail.com';
   }
 
@@ -34,13 +33,15 @@ export class MailService {
           ],
           subject: 'UCLA Swap Email Verification',
           dynamic_template_data: {
-              link: verificationLink,
+            link: verificationLink,
           },
         },
       ],
       template_id: templateId,
     };
-    const res = await lastValueFrom(this.httpService.post(url, data, { headers }));
+    const res = await lastValueFrom(
+      this.httpService.post(url, data, { headers }),
+    );
     // console.log(res);
     return res;
   }
@@ -68,15 +69,16 @@ export class MailService {
           ],
           subject: 'UCLA Swap Email Verification',
           dynamic_template_data: {
-              link: resetLink,
+            link: resetLink,
           },
         },
       ],
       template_id: templateId,
     };
-    const res = await lastValueFrom(this.httpService.post(url, data, { headers }));
+    const res = await lastValueFrom(
+      this.httpService.post(url, data, { headers }),
+    );
     // console.log(res);
     return res;
   }
-
 }
