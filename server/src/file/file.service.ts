@@ -12,7 +12,6 @@ export class FileService {
   ) {}
 
   create(createFileDtos: CreateFileDto[]) {
-    console.log(createFileDtos);
     return this.fileRepository.save(createFileDtos);
   }
 

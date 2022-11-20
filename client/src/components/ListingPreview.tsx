@@ -1,4 +1,4 @@
-import React from "react";
+import { FaHeart } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { Listing } from "../types";
 
