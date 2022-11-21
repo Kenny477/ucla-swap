@@ -4,7 +4,6 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { Listing, ImageFile } from "../types";
 import { FaAngleDown } from "react-icons/fa";
-import { HiPhotograph } from "react-icons/hi";
 import ImageUpload, { ImageWithPreview } from "../components/ImageUpload";
 
 interface FormErrors {
@@ -24,6 +23,33 @@ function NewListing() {
 		"Vehicles",
 		"Other",
 	];
+	const conditions = [
+		{
+			name: "New",
+			description: "Never used with original packaging.",
+			rating: 5,
+		},
+		{
+			name: "Like New",
+			description: "No visible signs of wear.",
+			rating: 4,
+		},
+		{
+			name: "Good",
+			description: "Gently used with only minor flaws.",
+			rating: 3,
+		},
+		{
+			name: "Fair",
+			description: "Used but functional with signs of wear.",
+			rating: 2,
+		},
+		{
+			name: "Poor",
+			description: "Damaged with flaws that may affect usability.",
+			rating: 1,
+		},
+	]
 
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
@@ -41,7 +67,6 @@ function NewListing() {
 	});
 	const [error, setError] = useState("");
 	const [showDropdown, setShowDropdown] = useState(false);
-	const [showImageUpload, setShowImageUpload] = useState(false);
 	const [triedSubmit, setTriedSubmit] = useState(false);
 
 	const navigate = useNavigate();
@@ -123,18 +148,12 @@ function NewListing() {
 			});
 	}
 
-	function handleImage() {
-		setShowImageUpload(true);
-	}
-
 	function addImages(newImages: ImageWithPreview[]) {
-		const newImagesWithPreview = newImages.map((image) =>
-			Object.assign(image, {
-				preview: URL.createObjectURL(image),
-			})
-		);
-		setImages([...images, ...newImagesWithPreview]);
+		console.log("adding", newImages, "to", images);
+		setImages(images => [...images, ...newImages]);
 	}
+	
+	useEffect(() => { console.log(images) }, [images]);
 
 	return (
 		<>
@@ -173,12 +192,12 @@ function NewListing() {
 					/>
 				</div>
 				<div className="col-span-4 col-start-1 row-span-1 row-start-6">
-					<ImageUpload setShowImageUpload={setShowImageUpload} addImages={addImages} />
+					<ImageUpload addImages={addImages} />
 				</div>
-				{/* <div className="col-span-1 row-span-1 row-start-6">
+				<div className="col-span-4 col-start-1 row-span-1 row-start-7">
 					{thumbnails}
-				</div> */}
-				<div className="col-span-4 col-start-1 row-start-7 row-span-1 flex flex-col space-y-2">
+				</div>
+				<div className="col-span-4 col-start-1 row-start-8 row-span-1 flex flex-col space-y-2">
 					<div className="flex flex-row items-center space-x-4">
 						<label htmlFor="category">Category</label>
 						{errors.category && (
@@ -208,9 +227,8 @@ function NewListing() {
 								</div>
 							))}
 					</div>
-
 				</div>
-				<div className="col-span-1 col-start-1 row-start-8 row-span-1 flex flex-col space-y-2">
+				<div className="col-span-1 col-start-1 row-start-9 row-span-1 flex flex-col space-y-2">
 					<div className="flex flex-row items-center space-x-4">
 						<label htmlFor="price">Price</label>
 						{errors.price && (
@@ -228,39 +246,17 @@ function NewListing() {
 						onChange={(e) => setPrice(+e.target.valueAsNumber.toFixed(2))}
 					/>
 				</div>
-				<div className="col-span-4 row-span-1 row-start-8">
+				<div className="col-span-4 row-span-1 row-start-10">
 					<label htmlFor="condition">Condition</label>
 					<div className="grid grid-cols-5 grid-rows-1 gap-2">
-						<button type="button" className="flex flex-col text-left p-2 bg-white rounded-md" onClick={() => setCondition(5)}>
-							New
-							<small>
-								New with original packaging. Never used.
-							</small>
-						</button>
-						<button type="button" className="flex flex-col text-left p-2 bg-white rounded-md" onClick={() => setCondition(4)}>
-							Like New
-							<small>
-								New with original packaging. Never used.
-							</small>
-						</button>
-						<button type="button" className="flex flex-col text-left p-2 bg-white rounded-md" onClick={() => setCondition(3)}>
-							Good
-							<small>
-								Gently used with only minor flaws.
-							</small>
-						</button>
-						<button type="button" className="flex flex-col text-left p-2 bg-white rounded-md" onClick={() => setCondition(2)}>
-							Fair
-							<small>
-								Used but functional with some signs of wear.
-							</small>
-						</button>
-						<button type="button" className="flex flex-col text-left p-2 bg-white rounded-md" onClick={() => setCondition(1)}>
-							Poor
-							<small>
-								Damaged or with flaws. May not be usable.
-							</small>
-						</button>
+						{conditions.map((c) => (
+							<button key={c.rating} type="button" className={`flex flex-col text-left p-2 bg-white rounded-md ${condition === c.rating ? 'outline outline-primary' : ''}`} onClick={() => setCondition(c.rating as 0 | 1 | 2 | 3 | 4 | 5)}>
+								{c.name}
+								<small>
+									{c.description}
+								</small>
+							</button>
+						))}
 					</div>
 				</div>
 				<div className="col-span-4 row-span-1 row-start-9 justify-self-end">

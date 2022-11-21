@@ -8,20 +8,11 @@ export type ImageWithPreview = File & {
 
 function ImageUpload({
 	addImages,
-	setShowImageUpload,
 }: {
 	addImages: (images: ImageWithPreview[]) => void;
-	setShowImageUpload: (showImageUpload: boolean) => void;
 }) {
-	const [files, setFiles] = useState<ImageWithPreview[]>([]);
-
-	function handleUpload() {
-		addImages(files);
-		setShowImageUpload(false);
-	}
-
 	const onDrop = useCallback((acceptedFiles: File[]) => {
-		setFiles(
+		addImages(
 			acceptedFiles.map((file) =>
 				Object.assign(file, {
 					preview: URL.createObjectURL(file),
@@ -36,22 +27,6 @@ function ImageUpload({
 		},
 	});
 
-	const thumbnails = files.map((file) => (
-		<div className="" key={file.name}>
-			<div className="">
-				<img
-					src={file.preview}
-					alt={file.name}
-					className="h-6"
-					// Revoke data uri after image is loaded
-					onLoad={() => {
-						URL.revokeObjectURL(file.preview);
-					}}
-				/>
-			</div>
-		</div>
-	));
-
 	return (
 		<div
 			{...getRootProps({
@@ -59,7 +34,7 @@ function ImageUpload({
 			})}
 		>
 			<input {...getInputProps()} />
-			<button type="button" className="bg-primary rounded-lg text-white w-1/3 p-2" onClick={handleUpload}>
+			<button type="button" className="bg-primary rounded-lg text-white w-1/3 p-2">
 				Upload
 			</button>
 			{isDragActive ?
