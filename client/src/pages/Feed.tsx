@@ -21,13 +21,15 @@ function Feed() {
 	);
 	const [listings, setListings] = useState<Listing[]>([]);
 	const [search, setSearch] = useState("");
+	const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
+	const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
 
 	const [cookies, setCookie] = useCookies();
 
 	function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
 		setSearch(e.target.value);
-		console.log(e.target.value);
 	}
+
 	const debouncedSearch = useMemo(() => {
 		return debounce(handleSearch, 300);
 	}, []);
@@ -45,9 +47,12 @@ function Feed() {
 		const selectedCategories = Object.keys(selected).filter(
 			(category) => selected[category]
 		);
+		let filter = (searchInDescription || searchInTitle);
 		if (selectedCategories)
-			return selectedCategories.includes(listing.category) && (searchInDescription || searchInTitle);
-		return searchInDescription || searchInTitle;
+			filter &&= selectedCategories.includes(listing.category);
+		if (minPrice !== undefined) filter &&= listing.price >= minPrice;
+		if (maxPrice !== undefined) filter &&= listing.price <= maxPrice;
+		return filter;
 	}
 
 	useEffect(() => {
@@ -65,7 +70,7 @@ function Feed() {
 	}, []);
 
 	return (
-		<div className="grid grid-cols-4 grid-rows-6 px-20 h-full pb-10">
+		<div className="grid grid-cols-4 grid-rows-6 px-10 h-full pb-10">
 			<div className="col-span-4 row-span-1 flex flex-row justify-center items-center py-4">
 				<h1 className="text-lg">Feed</h1>
 				<NavLink
@@ -76,7 +81,7 @@ function Feed() {
 					<p>New Listing</p>
 				</NavLink>
 			</div>
-			<div className="col-span-1 row-span-5 border-primary_lighter border-r px-10 flex flex-col space-y-2">
+			<div className="col-span-1 row-span-5 border-primary_lighter border-r px-4 flex flex-col space-y-2">
 				<div>
 					<h2 className="text-lg">Search</h2>
 					<div className="flex flex-row justify-between items-center space-x-4">
@@ -86,7 +91,7 @@ function Feed() {
 							onChange={debouncedSearch}
 							className="focus:outline-0 border-b focus:border-primary_darker border-primary_lighter w-full"
 						/>
-						<FaSearch className="text-primary_lighter hover:text-primary_darker cursor-pointer h-6 w-6" />
+						{/* <FaSearch className="text-primary_lighter hover:text-primary_darker cursor-pointer h-6 w-6" /> */}
 					</div>
 				</div>
 				<div>
@@ -114,6 +119,30 @@ function Feed() {
 							</label>
 						</div>
 					))}
+				</div>
+				<div>
+					<h2 className="text-lg">Price</h2>
+					<div className="flex flex-row justify-between items-center space-x-4">
+						<input
+							type="number"
+							title="min"
+							placeholder="Minimum"
+							min={0}
+							value={minPrice}
+							onChange={(e) => setMinPrice(e.target.valueAsNumber === 0 || e.target.value ? e.target.valueAsNumber : undefined)}
+							className="focus:outline-0 border-b focus:border-primary_darker border-primary_lighter w-full"
+						/>
+						<p>-</p>
+						<input
+							type="number"
+							title="max"
+							placeholder="Maximum"
+							min={0}
+							value={maxPrice}
+							onChange={(e) => setMaxPrice(e.target.valueAsNumber === 0 || e.target.value ? e.target.valueAsNumber : undefined)}
+							className="focus:outline-0 border-b focus:border-primary_darker border-primary_lighter w-full"
+						/>
+					</div>
 				</div>
 			</div>
 			<div className="col-span-3 row-span-5 overflow-y-scroll grid grid-cols-2 gap-4 px-4">

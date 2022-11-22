@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios, { AxiosPromise } from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { Listing, ImageFile } from "../types";
+import { Listing, ImageWithPreview } from "../types";
 import { FaAngleDown } from "react-icons/fa";
-import ImageUpload, { ImageWithPreview } from "../components/ImageUpload";
+import ImageUpload from "../components/ImageUpload";
 
 interface FormErrors {
 	title?: string;

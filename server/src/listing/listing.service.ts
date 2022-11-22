@@ -14,11 +14,17 @@ export class ListingService {
   ) { }
 
   findAll(): Promise<Listing[]> {
-    return this.listingRepository.find();
+    return this.listingRepository.find({ relations: ['files'] });
   }
 
   findById(id: string): Promise<Listing> {
     return this.listingRepository.findOne({ where: { id }, relations: ['files'] });
+  }
+
+  async findListingImage(id: string, imageId: string): Promise<string> {
+    const listing = await this.findById(id);
+    const file = listing.files.find((file) => file.id === imageId);
+    return file.filename;
   }
 
   async createForUser(id: string, listing: CreateListingDto): Promise<Listing> {

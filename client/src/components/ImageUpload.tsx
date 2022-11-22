@@ -1,10 +1,7 @@
 import axios from "axios";
 import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-
-export type ImageWithPreview = File & {
-	preview: string;
-}
+import { ImageWithPreview } from "../types";
 
 function ImageUpload({
 	addImages,

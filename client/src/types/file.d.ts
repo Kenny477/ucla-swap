@@ -5,3 +5,7 @@ export interface ImageFile {
 	size: number;
 	listingId: string;
 }
+
+export type ImageWithPreview = File & {
+	preview: string;
+}
