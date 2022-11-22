@@ -30,7 +30,7 @@ function ImageUpload({
 	return (
 		<div
 			{...getRootProps({
-				className: "bg-white rounded-lg p-4 flex flex-col space-y-2 items-center",
+				className: "w-full h-full p-4 flex flex-col space-y-2 items-center"
 			})}
 		>
 			<input {...getInputProps()} />

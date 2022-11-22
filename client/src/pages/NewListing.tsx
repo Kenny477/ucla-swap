@@ -12,6 +12,7 @@ interface FormErrors {
 	category?: string;
 	price?: string;
 	images?: string;
+	condition?: string;
 }
 
 function NewListing() {
@@ -64,6 +65,7 @@ function NewListing() {
 		price: "",
 		category: "",
 		images: "",
+		condition: "",
 	});
 	const [error, setError] = useState("");
 	const [showDropdown, setShowDropdown] = useState(false);
@@ -90,18 +92,16 @@ function NewListing() {
 	}
 
 	const thumbnails = images.map((file) => (
-		<div className="" key={file.name}>
-			<div className="">
-				<img
-					src={file.preview}
-					alt={file.name}
-					className="h-6"
-					// Revoke data uri after image is loaded
-					onLoad={() => {
-						URL.revokeObjectURL(file.preview);
-					}}
-				/>
-			</div>
+		<div className="col-span-1 row-span-1 aspect-square border border-black bg-black" key={file.preview}>
+			<img
+				src={file.preview}
+				alt={file.name}
+				className="h-full w-full object-contain"
+				// Revoke data uri after image is loaded
+				onLoad={() => {
+					URL.revokeObjectURL(file.preview);
+				}}
+			/>
 		</div>
 	));
 
@@ -120,6 +120,7 @@ function NewListing() {
 
 	async function handlePost() {
 		setTriedSubmit(true);
+		if(Object.values(errors).some((error) => error)) return
 		const endpoint = "/api/listing/create";
 		const data = {
 			title,
@@ -149,11 +150,8 @@ function NewListing() {
 	}
 
 	function addImages(newImages: ImageWithPreview[]) {
-		console.log("adding", newImages, "to", images);
 		setImages(images => [...images, ...newImages]);
 	}
-	
-	useEffect(() => { console.log(images) }, [images]);
 
 	return (
 		<>
@@ -191,10 +189,18 @@ function NewListing() {
 						onChange={(e) => setDescription(e.target.value)}
 					/>
 				</div>
-				<div className="col-span-4 col-start-1 row-span-1 row-start-6">
-					<ImageUpload addImages={addImages} />
+				<div className="col-span-4 col-start-1 row-span-1 row-start-6 flex flex-col space-y-2">
+					<div className="flex flex-row items-center space-x-4">
+						<label htmlFor="images">Images</label>
+						{errors.description && (
+							<p className="text-red-500 text-sm">{errors.description}</p>
+						)}
+					</div>
+					<div className={`bg-white rounded-lg ${errors.images ? "outline outline-red-500" : "focus:outline-none"}`}>
+						<ImageUpload addImages={addImages} />
+					</div>
 				</div>
-				<div className="col-span-4 col-start-1 row-span-1 row-start-7">
+				<div className="col-span-4 col-start-1 row-span-1 row-start-7 grid grid-cols-5 grid-rows-2 gap-2">
 					{thumbnails}
 				</div>
 				<div className="col-span-4 col-start-1 row-start-8 row-span-1 flex flex-col space-y-2">
@@ -247,7 +253,12 @@ function NewListing() {
 					/>
 				</div>
 				<div className="col-span-4 row-span-1 row-start-10">
-					<label htmlFor="condition">Condition</label>
+					<div className="flex flex-row items-center space-x-4">
+						<label htmlFor="condition">Condition</label>
+						{errors.condition && (
+							<p className="text-red-500 text-sm">{errors.condition}</p>
+						)}
+					</div>
 					<div className="grid grid-cols-5 grid-rows-1 gap-2">
 						{conditions.map((c) => (
 							<button key={c.rating} type="button" className={`flex flex-col text-left p-2 bg-white rounded-md ${condition === c.rating ? 'outline outline-primary' : ''}`} onClick={() => setCondition(c.rating as 0 | 1 | 2 | 3 | 4 | 5)}>

@@ -20,14 +20,18 @@ function Listing() {
 				},
 			})
 			.then((res) => {
-				// console.log(res.data);
+				console.log(res.data);
 				setListing(res.data);
+			}).then(() => {
+
 			});
 	}, [id]);
 
+
 	return (
-		<div className="grid grid-cols-4">
-			<h1 className="col-span-4">{listing.title}</h1>
+		<div className="grid grid-cols-4 p-10">
+			<h1 className="col-span-4 text-2xl font-bold">{listing.title}</h1>
+			<p className="col-span-4 text-lg font-semibold">${listing.price}</p>
 			<p className="col-span-4">{listing.description}</p>
 		</div>
 	);

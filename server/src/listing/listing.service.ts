@@ -11,14 +11,14 @@ export class ListingService {
     @InjectRepository(Listing)
     private listingRepository: Repository<Listing>,
     private userService: UserService,
-  ) {}
+  ) { }
 
   findAll(): Promise<Listing[]> {
     return this.listingRepository.find();
   }
 
   findById(id: string): Promise<Listing> {
-    return this.listingRepository.findOneBy({ id });
+    return this.listingRepository.findOne({ where: { id }, relations: ['files'] });
   }
 
   async createForUser(id: string, listing: CreateListingDto): Promise<Listing> {
