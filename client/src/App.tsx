@@ -49,7 +49,8 @@ function App() {
         {
           authenticated && (
             <>
-              {/* <Route path="/profile" element={<Profile />} /> */}
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/:id" element={<Profile />} />
               <Route path="/feed" element={<Feed />} />
               <Route path="/listing/:id" element={<Listing />} />
               <Route path="/new-listing" element={<NewListing />} />

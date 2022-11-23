@@ -48,7 +48,6 @@ export class ListingService {
 
   async getLiked(userId: string, listingId: string): Promise<boolean> {
     const listing = await this.listingRepository.findOne({ where: { id: listingId }, relations: ['userLikes'] });
-    console.log(listing);
     return listing.userLikes.some((user) => user.id === userId);
   }
 }

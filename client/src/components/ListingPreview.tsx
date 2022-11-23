@@ -38,7 +38,6 @@ function ListingPreview({ listing }: { listing: Listing }) {
 				"Authorization": `Bearer ${cookies.access_token}`,
 			},
 		}).then((res) => {
-			console.log(res);
 			setLiked(res.data);
 		});
 	}, [listing]);
@@ -51,7 +50,6 @@ function ListingPreview({ listing }: { listing: Listing }) {
 				"Authorization": `Bearer ${cookies.access_token}`,
 			},
 		}).then((res) => {
-			console.log(res);
 			setLiked(res.data);
 		});
 	}

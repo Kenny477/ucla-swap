@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 
@@ -9,7 +9,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async updateVerificationToken(userId: string, token: string): Promise<any> {
     const user = await this.userRepository.findOneBy({ id: userId });
@@ -67,6 +67,11 @@ export class UserService {
 
   findById(id: string): Promise<User> {
     return this.userRepository.findOneBy({ id });
+  }
+
+  getProfile(id: string, self: boolean = false): Promise<DeepPartial<User>> {
+    const relationsToLoad = self ? ['listings', 'listings.files', 'likedListings', 'likedListings.files'] : ['listings', 'listings.files'];
+    return this.userRepository.findOne({ where: { id }, select: ['id', 'email'], relations: relationsToLoad });
   }
 
   findByEmail(email: string): Promise<User> {

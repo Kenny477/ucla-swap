@@ -10,7 +10,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req: Request, @Res() res: Response) {
-    const { email } = req.user as any;
+    const { email } = req.user as { email: string };
     const verified = await this.authService.isEmailVerified(email);
     // console.log(verified)
     if (verified) {

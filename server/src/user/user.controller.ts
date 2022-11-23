@@ -6,13 +6,11 @@ import { UserService } from './user.service';
 @Controller({ path: 'user' })
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  // @UseGuards(JwtAuthGuard)
-  // @Get('profile')
-  // getProfile(@Req() req: Request) {
-  //   return req.user;
-  // }
-  // @Get('profile/:id')
-  // getProfileById(@Req() req: Request, @Param('id') id: string) {
-  //   return req.user;
-  // }
+  
+  @UseGuards(JwtAuthGuard)
+  @Get('profile/:id')
+  getProfileById(@Req() req: Request, @Param('id') id: string) {
+    const user = req.user as { userId: string };
+    return this.userService.getProfile(id, user.userId === id);
+  }
 }

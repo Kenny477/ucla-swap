@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { ImageWithPreview, Listing as ListingType } from "../types";
@@ -46,12 +46,14 @@ function Listing() {
 		<div className="grid grid-cols-4 p-10">
 			<h1 className="col-span-4 text-2xl font-bold">{listing.title}</h1>
 			<p className="col-span-4 text-lg font-semibold">${listing.price}</p>
-			<p className="col-span-4 text-md">Contact the listing owner at <a href={`mailto:${listing.user?.email}`}>{listing.user?.email}</a></p>
+			<div className="col-span-4 flex flex-row space-x-4 items-center">
+				<NavLink to={`/profile/${listing.user?.id}`} className="text-md">{listing.user?.email}</NavLink>
+				<a href={`mailto:${listing.user?.email}`} className="text-white bg-primary rounded-lg p-2">Send Email</a></div>
 			<div className="col-span-4">
 				<Gallery images={images} />
 			</div>
 			<p className="col-span-4">{listing.description}</p>
-		</div>
+		</div >
 	);
 }
 

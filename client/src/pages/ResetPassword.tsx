@@ -17,7 +17,6 @@ function ResetPassword() {
     }
     else {
       const url = '/api/auth/reset-password'
-      console.log(token)
       const body = { password, token }
       const res = await axios.post(url, body, {
         headers: {

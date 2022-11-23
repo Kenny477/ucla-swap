@@ -43,8 +43,8 @@ export class ListingController {
   @Post('create')
   @UseGuards(JwtAuthGuard)
   createForUser(@Req() req: Request, @Body() listing: CreateListingDto) {
-    const { id } = req.user as any;
-    return this.listingService.createForUser(id, listing);
+    const user = req.user as { userId: string};
+    return this.listingService.createForUser(user.userId, listing);
   }
 
   @UseGuards(JwtAuthGuard)
