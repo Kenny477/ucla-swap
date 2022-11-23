@@ -59,12 +59,13 @@ function ListingPreview({ listing }: { listing: Listing }) {
 	return (
 		<div className="col-span-1 shadow-md rounded-md p-2 flex flex-col">
 			<NavLink to={`/listing/${listing.id}`}>
-				<h1 className="text-lg">{listing.title}</h1>
+				<h1 className="text-lg font-bold">{listing.title}</h1>
+				<p className="text-md font-bold">${listing.price}</p>
 				<img className="row-span-1 aspect-square w-full object-contain" alt={image.name} src={image.preview} />
 			</NavLink>
 			<div className="grid grid-cols-6">
 				<div className="col-span-5 flex flex-col justify-center">
-					<p className="text-md">{new Date(listing.created_at).toDateString()}</p>
+					<p className="text-md">{new Date(listing.created_at).toLocaleDateString()}</p>
 				</div>
 				<div className="col-span-1 aspect-square p-3 flex items-center justify-center">
 					{liked ? <HiHeart className="w-6 h-6 fill-red-500" onClick={handleLike} /> : <HiOutlineHeart className="w-6 h-6" onClick={handleLike} />}

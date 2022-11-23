@@ -9,4 +9,8 @@ export interface Listing {
 	condition: number;
 	created_at: string;
 	category: "Books" | "Electronics" | "Furniture" | "Clothing" | "Vehicles" | "Other";
+	user: {
+		id: string;
+		email: string;
+	}
 }

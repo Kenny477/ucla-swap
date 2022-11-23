@@ -145,7 +145,7 @@ function Feed() {
 					</div>
 				</div>
 			</div>
-			<div className="col-span-3 row-span-5 overflow-y-scroll grid grid-cols-2 gap-4 px-4">
+			<div className="col-span-3 row-span-5 overflow-y-scroll grid grid-cols-3 auto-rows-max gap-4 px-4">
 				{listings
 					.filter((listing) => handleFilter(listing))
 					.map((listing) => {

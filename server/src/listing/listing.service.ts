@@ -18,7 +18,7 @@ export class ListingService {
   }
 
   findById(id: string): Promise<Listing> {
-    return this.listingRepository.findOne({ where: { id }, relations: ['files'] });
+    return this.listingRepository.findOne({ where: { id }, relations: ['files', 'user'] });
   }
 
   async findListingImage(id: string, imageId: string): Promise<string> {

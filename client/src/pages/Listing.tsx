@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { json, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { ImageWithPreview, Listing as ListingType } from "../types";
+import Gallery from "../components/Gallery";
 
 function Listing() {
 	const [listing, setListing] = useState<ListingType>({} as ListingType);
@@ -45,11 +46,10 @@ function Listing() {
 		<div className="grid grid-cols-4 p-10">
 			<h1 className="col-span-4 text-2xl font-bold">{listing.title}</h1>
 			<p className="col-span-4 text-lg font-semibold">${listing.price}</p>
-			{images.map((image) => (
-				<div className="col-span-1" key={image.name}>
-					<img alt={image.name} src={image.preview} />
-				</div>
-			))}
+			<p className="col-span-4 text-md">Contact the listing owner at <a href={`mailto:${listing.user?.email}`}>{listing.user?.email}</a></p>
+			<div className="col-span-4">
+				<Gallery images={images} />
+			</div>
 			<p className="col-span-4">{listing.description}</p>
 		</div>
 	);
