@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   OneToMany,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { File } from '../../file/entities/file.entity';
@@ -41,5 +42,6 @@ export class Listing {
   files: File[];
 
   @ManyToMany(() => User, (user) => user.likedListings)
+  @JoinTable()
   userLikes: User[];
 }

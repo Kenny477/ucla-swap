@@ -32,4 +32,23 @@ export class ListingService {
     const listingWithUser = { ...listing, user };
     return this.listingRepository.save(listingWithUser);
   }
+
+  async likeListing(userId: string, listingId: string): Promise<boolean> {
+    const listing = await this.listingRepository.findOne({ where: { id: listingId }, relations: ['userLikes'] });
+    if (listing.userLikes.find((user) => user.id === userId)) {
+      listing.userLikes = listing.userLikes.filter((user) => user.id !== userId);
+      this.listingRepository.save(listing);
+      return false;
+    }
+    const user = await this.userService.findById(userId);
+    listing.userLikes.push(user);
+    this.listingRepository.save(listing);
+    return true;
+  }
+
+  async getLiked(userId: string, listingId: string): Promise<boolean> {
+    const listing = await this.listingRepository.findOne({ where: { id: listingId }, relations: ['userLikes'] });
+    console.log(listing);
+    return listing.userLikes.some((user) => user.id === userId);
+  }
 }

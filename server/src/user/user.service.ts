@@ -61,10 +61,6 @@ export class UserService {
       .execute();
   }
 
-  likeListing(user: User, listingId: string): Promise<void> {
-    return this.userRepository.createQueryBuilder().relation(User, 'likedListings').of(user).add(listingId);
-  }
-
   findAll(): Promise<User[]> {
     return this.userRepository.find();
   }

@@ -46,4 +46,18 @@ export class ListingController {
     const { id } = req.user as any;
     return this.listingService.createForUser(id, listing);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/like')
+  async likeListing(@Req() req: Request, @Param('id') listingId: string) {
+    const user = req.user as { userId: string };
+    return this.listingService.likeListing(user.userId, listingId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/like')
+  async getLiked(@Req() req: Request, @Param('id') listingId: string) {
+    const user = req.user as { userId: string };
+    return this.listingService.getLiked(user.userId, listingId);
+  }
 }

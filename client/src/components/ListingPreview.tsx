@@ -10,6 +10,7 @@ function ListingPreview({ listing }: { listing: Listing }) {
 	const [image, setImage] = useState<ImageWithPreview>({} as ImageWithPreview);
 	const [cookies] = useCookies(["access_token"]);
 
+	// Update cover image
 	useEffect(() => {
 		const coverImage = listing.files[0];
 		if (coverImage) {
@@ -28,6 +29,33 @@ function ListingPreview({ listing }: { listing: Listing }) {
 		}
 	}, [listing]);
 
+	// Get if listing is liked or not
+	useEffect(() => {
+		const url = `/api/listing/${listing.id}/like`;
+		axios.get(url, {
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${cookies.access_token}`,
+			},
+		}).then((res) => {
+			console.log(res);
+			setLiked(res.data);
+		});
+	}, [listing]);
+
+	function handleLike() {
+		const url = `/api/listing/${listing.id}/like`;
+		axios.post(url, {}, {
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${cookies.access_token}`,
+			},
+		}).then((res) => {
+			console.log(res);
+			setLiked(res.data);
+		});
+	}
+
 	return (
 		<div className="col-span-1 shadow-md rounded-md p-2 flex flex-col">
 			<NavLink to={`/listing/${listing.id}`}>
@@ -39,7 +67,7 @@ function ListingPreview({ listing }: { listing: Listing }) {
 					<p className="text-md">{new Date(listing.created_at).toDateString()}</p>
 				</div>
 				<div className="col-span-1 aspect-square p-3 flex items-center justify-center">
-					{liked ? <HiHeart className="w-6 h-6 fill-red-500" onClick={() => setLiked(false)} /> : <HiOutlineHeart className="w-6 h-6" onClick={() => setLiked(true)} />}
+					{liked ? <HiHeart className="w-6 h-6 fill-red-500" onClick={handleLike} /> : <HiOutlineHeart className="w-6 h-6" onClick={handleLike} />}
 				</div>
 			</div>
 		</div>
