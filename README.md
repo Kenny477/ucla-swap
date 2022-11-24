@@ -101,6 +101,7 @@ Follow these instructions to run the frontend and backend for the web applicatio
 ```text
 /src
 |- /auth
+|- /file
 |- /listing
 |- /mail
 |- /user
@@ -108,6 +109,7 @@ Follow these instructions to run the frontend and backend for the web applicatio
 |- app.module.ts
 |- app.service.ts
 |- main.ts
+/storage
 .env
 docker-compose.prod.yml
 docker-compose.yml
@@ -116,6 +118,7 @@ Dockerfile
 
 - `/src` - All the source code
   - `/auth` - Authentication module
+  - `/file` - File module
   - `/listing` - Listing module
   - `/mail` - Mail module
   - `/user` - User module
@@ -123,6 +126,7 @@ Dockerfile
   - `app.module.ts` - Module for top-level endpoints
   - `app.service.ts` - Service for top-level endpoints
   - `main.ts` - Entry point for backend server
+- `/storage` - All the files uploaded to the server
 - `.env` - Environment variables
 - `docker-compose.prod.yml` - Docker compose file for production
 - `docker-compose.yml` - Docker compose file for development

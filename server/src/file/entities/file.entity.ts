@@ -1,5 +1,11 @@
-import { Listing } from "src/listing/entities/listing.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Listing } from 'src/listing/entities/listing.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class File {
@@ -8,7 +14,7 @@ export class File {
 
   @Column()
   filename: string;
-  
+
   @Column()
   mimetype: string;
 

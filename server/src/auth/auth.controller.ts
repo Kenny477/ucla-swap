@@ -1,7 +1,6 @@
 import { Get, Controller, Req, UseGuards, Post, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthService } from '../auth/auth.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
 
 @Controller({ path: 'auth' })
@@ -11,15 +10,14 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req: Request, @Res() res: Response) {
-    const { email } = req.user as any;
+    const { email } = req.user as { email: string };
     const verified = await this.authService.isEmailVerified(email);
     // console.log(verified)
     if (verified) {
       const access_token = await this.authService.login(req.user);
       // console.log(access_token)
-      res.send(access_token)
-    }
-    else {
+      res.send(access_token);
+    } else {
       res.redirect('/email-not-verified');
     }
   }
@@ -48,9 +46,15 @@ export class AuthController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Req() req: Request) {
-    return req.user;
+  @Post('forgot-password')
+  async forgotPassword(@Req() req: Request, @Res() res: Response) {
+    const { email } = req.body;
+    const user = await this.authService.forgotPassword(email);
+  }
+
+  @Post('reset-password')
+  async resetPassword(@Req() req: Request, @Res() res: Response) {
+    const { token, password } = req.body;
+    const user = await this.authService.resetPassword(token, password);
   }
 }

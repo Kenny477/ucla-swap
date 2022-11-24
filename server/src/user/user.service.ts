@@ -9,7 +9,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async updateVerificationToken(userId: string, token: string): Promise<any> {
     const user = await this.userRepository.findOneBy({ id: userId });
@@ -39,6 +39,28 @@ export class UserService {
       .execute();
   }
 
+  async addResetToken(
+    userId: string,
+    fields: {
+      resetToken: string;
+      resetTokenExpires: Date;
+    },
+  ): Promise<any> {
+    return this.userRepository
+      .createQueryBuilder()
+      .update(fields)
+      .where({ id: userId })
+      .execute();
+  }
+
+  updatePassword(id: string, password: string): Promise<any> {
+    return this.userRepository
+      .createQueryBuilder()
+      .update({ password })
+      .where({ id })
+      .execute();
+  }
+
   findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
@@ -47,8 +69,17 @@ export class UserService {
     return this.userRepository.findOneBy({ id });
   }
 
+  getProfile(id: string, self: boolean = false): Promise<DeepPartial<User>> {
+    const relationsToLoad = self ? ['listings', 'listings.files', 'likedListings', 'likedListings.files'] : ['listings', 'listings.files'];
+    return this.userRepository.findOne({ where: { id }, select: ['id', 'email'], relations: relationsToLoad });
+  }
+
   findByEmail(email: string): Promise<User> {
     return this.userRepository.findOneBy({ email });
+  }
+
+  findByResetToken(token: string): Promise<User> {
+    return this.userRepository.findOneBy({ resetToken: token });
   }
 
   create(user: CreateUserDto): Promise<User> {
