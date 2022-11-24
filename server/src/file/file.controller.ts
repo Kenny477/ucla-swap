@@ -12,6 +12,7 @@ import {
   MaxFileSizeValidator,
   FileTypeValidator,
   UploadedFiles,
+  Req,
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { CreateFileDto } from './dto/create-file.dto';
@@ -36,21 +37,22 @@ export class FileController {
     }),
   )
   create(
-    @UploadedFiles(
-      // new ParseFilePipe({
-      //   validators: [
-      //     new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 10 }), // 10MB
-      //     new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ }),
-      //   ],
-      // }),
-    )
-    files: Array<Express.Multer.File>,
+    @UploadedFiles()
+    files: // new ParseFilePipe({
+    //   validators: [
+    //     new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 10 }), // 10MB
+    //     new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ }),
+    //   ],
+    // }),
+    Array<Express.Multer.File>,
+    @Body() body: { listingId: string },
   ) {
     const fileInfos: CreateFileDto[] = files.map((file) => {
       return {
         filename: file.filename,
         size: file.size,
         mimetype: file.mimetype,
+        listing: { id: body.listingId },
       };
     });
     return this.fileService.create(fileInfos);

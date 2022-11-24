@@ -6,6 +6,7 @@ import axios from "axios";
 function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [error, setError] = useState("");
 
 	const navigate = useNavigate();
 
@@ -32,7 +33,14 @@ function Login() {
 				if (res.status === 201) {
 					navigate("/feed");
 				}
-			});
+			}).catch(
+				(error) => {
+					// console.log(error);
+					if(error.response.status === 401) {
+						setError("Invalid email or password");
+					}
+				}
+			);
 	}
 
 	return (
@@ -60,8 +68,12 @@ function Login() {
 				>
 					Login
 				</button>
-				<NavLink to="/signup" className="text-primary">
-					Don't have an account. Signup here.
+				<div className="text-red-500">{error}</div>
+				<NavLink to="/signup" className="text-primary text-sm text-center">
+					Don't have an account? Signup here.
+				</NavLink>
+				<NavLink to="/forgot-password" className="text-primary text-sm text-center">
+					Forgot password?
 				</NavLink>
 			</div>
 		</div>

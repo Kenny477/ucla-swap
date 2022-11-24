@@ -1,4 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { File } from '../../file/entities/file.entity';
 
@@ -13,11 +22,9 @@ export class Listing {
   @Column('longtext')
   description: string;
 
-  @Column(
-    {
-      default: 0,
-    }
-  )
+  @Column({
+    default: 0,
+  })
   price: number;
 
   @CreateDateColumn()
@@ -33,4 +40,8 @@ export class Listing {
 
   @OneToMany(() => File, (file) => file.listing)
   files: File[];
+
+  @ManyToMany(() => User, (user) => user.likedListings)
+  @JoinTable()
+  userLikes: User[];
 }

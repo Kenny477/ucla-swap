@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { Listing } from '../../listing/entities/listing.entity';
 
 @Entity()
@@ -27,6 +34,19 @@ export class User {
   })
   verificationTokenExpires: Date;
 
+  @Column({
+    default: null,
+  })
+  resetToken: string;
+
+  @Column({
+    default: null,
+  })
+  resetTokenExpires: Date;
+
   @OneToMany(() => Listing, (listing) => listing.user)
   listings: Listing[];
+
+  @ManyToMany(() => Listing, (listing) => listing.userLikes)
+  likedListings: Listing[];
 }
