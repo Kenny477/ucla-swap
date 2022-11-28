@@ -1,5 +1,6 @@
 import LargeHero from "./largeHero";
 import HeroImage from "./HeroImage";
+import Features from "./Features";
 
 function Home() { 
 	return (
@@ -12,6 +13,7 @@ function Home() {
 			</div>
 				<HeroImage />
 			</div>
+			<Features/>
 		</div>
 	  );
 	};

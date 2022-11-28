@@ -9,6 +9,24 @@ export interface mainHero {
     },
 }
 
-export interface heroImage {
-    
+export interface features {
+    title: string,
+    item1:
+      {
+        title: string,
+        description: string,
+        img: string,
+      },
+      item2:
+      {
+        title: string,
+        description: string,
+        img: string,
+      },
+      item3:
+      {
+        title: string,
+        description: string,
+        img: string,
+      },
 }
