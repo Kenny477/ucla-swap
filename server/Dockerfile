@@ -1,5 +1,5 @@
 # Base image
-FROM node:18-alpine as build
+FROM --platform=linux/amd64 node:18-alpine as build
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -16,7 +16,7 @@ COPY . .
 # Creates a "dist" folder with the production build
 RUN npm run build
 
-FROM node:18-alpine as main
+FROM --platform=linux/amd64 node:18-alpine as main
 
 WORKDIR /usr/src/app
 
