@@ -3,6 +3,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 import Home from "./pages/LandingPage/Home";
+import AboutUs from "./pages/AboutUs/Home"
 import Feed from "./pages/Feed";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -46,6 +47,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/aboutus" element={<AboutUs />} />
         {
           authenticated && (
             <>
