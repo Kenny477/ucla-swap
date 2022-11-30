@@ -38,3 +38,5 @@ lerna-debug.log*
 *.tar.gz
 
 storage/
+
+.env*
