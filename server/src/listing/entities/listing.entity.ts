@@ -35,6 +35,11 @@ export class Listing {
   })
   category: string;
 
+  @Column({
+    default: 0,
+  })
+  condition: number;
+
   @ManyToOne(() => User, (user) => user.listings)
   user: User;
 

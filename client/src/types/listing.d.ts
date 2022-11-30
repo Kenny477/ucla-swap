@@ -6,7 +6,7 @@ export interface Listing {
 	description: string;
 	price: number;
 	files: ImageFile[];
-	condition: number;
+	condition: 0 | 1 | 2 | 3 | 4 | 5;
 	created_at: string;
 	category: "Books" | "Electronics" | "Furniture" | "Clothing" | "Vehicles" | "Other";
 	user: {

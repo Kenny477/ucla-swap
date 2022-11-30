@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Signup() {
 	const [email, setEmail] = useState("");
@@ -40,8 +40,8 @@ function Signup() {
 
 	return (
 		<div className="flex flex-col items-center justify-center h-full space-y-8">
-			<h1 className="text-xl">Signup</h1>
-			<div className="flex flex-col space-y-4 text-lg">
+			<h1 className="text-2xl font-bold">Signup</h1>
+			<div className="flex flex-col space-y-4 text-lg w-1/4">
 				<input
 					type="text"
 					placeholder="email"

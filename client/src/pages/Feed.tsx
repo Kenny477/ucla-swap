@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { FaSearch, FaPlus } from "react-icons/fa";
+import { FaSearch, FaPlus, FaAngleDown, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
 import { useCookies } from "react-cookie";
-import ListingPreview from "../components/ListingPreview";
+import ListingPreview from "../components/Listing/ListingPreview";
 import { debounce } from "lodash";
 import { Listing } from "../types";
+
+type Sort = "Recent" | "Old" | "Price (ascending)" | "Price (descending)" | "Condition (ascending)" | "Condition (descending)";
 
 function Feed() {
 	const categories: Listing["category"][] = [
@@ -16,6 +18,14 @@ function Feed() {
 		"Vehicles",
 		"Other",
 	];
+	const sorts: Sort[] = [
+		"Recent",
+		"Old",
+		"Price (ascending)",
+		"Price (descending)",
+		"Condition (ascending)",
+		"Condition (descending)",
+	]
 	const [selected, setSelected] = useState<{ [key: string]: boolean }>(
 		categories.reduce((acc, curr) => ({ ...acc, [curr]: true }), {})
 	);
@@ -23,6 +33,8 @@ function Feed() {
 	const [search, setSearch] = useState("");
 	const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
 	const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
+	const [sort, setSort] = useState<Sort>("Recent")
+	const [showDropdown, setShowDropdown] = useState(false);
 
 	const [cookies, setCookie] = useCookies();
 
@@ -55,6 +67,23 @@ function Feed() {
 		return filter;
 	}
 
+	function handleSort(a: Listing, b: Listing) {
+		switch (sort) {
+			case "Recent":
+				return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+			case "Old":
+				return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+			case "Price (ascending)":
+				return a.price - b.price;
+			case "Price (descending)":
+				return b.price - a.price;
+			case "Condition (ascending)":
+				return a.condition - b.condition;
+			case "Condition (descending)":
+				return b.condition - a.condition;
+		}
+	}
+
 	useEffect(() => {
 		const endpoint = "/api/listing";
 		axios
@@ -70,20 +99,19 @@ function Feed() {
 	}, []);
 
 	return (
-		<div className="grid grid-cols-4 grid-rows-6 px-10 h-full pb-10">
-			<div className="col-span-4 row-span-1 flex flex-row justify-center items-center py-4">
-				<h1 className="text-lg">Feed</h1>
-				<NavLink
-					to="/new-listing"
-					className="bg-primary text-white rounded-lg p-4 flex flex-row items-center space-x-2 absolute right-20"
-				>
-					<FaPlus />
-					<p>New Listing</p>
-				</NavLink>
-			</div>
-			<div className="col-span-1 row-span-5 border-primary_lighter border-r px-4 flex flex-col space-y-2">
+		<div className="grid grid-cols-4 grid-rows-5 px-10 h-full py-10">
+			<div className="col-span-1 row-span-5 border-primary_lighter border-r px-4 flex flex-col space-y-4">
 				<div>
-					<h2 className="text-lg">Search</h2>
+					<NavLink
+						to="/new-listing"
+						className="bg-primary text-white rounded-lg p-4 flex flex-row w-min items-center space-x-2"
+					>
+						<FaPlus />
+						<p className="text-xl font-bold w-max">New Listing</p>
+					</NavLink>
+				</div>
+				<div>
+					<h2 className="text-lg font-semibold">Search</h2>
 					<div className="flex flex-row justify-between items-center space-x-4">
 						<input
 							type="text"
@@ -95,7 +123,7 @@ function Feed() {
 					</div>
 				</div>
 				<div>
-					<h2 className="text-lg">Categories</h2>
+					<h2 className="text-lg font-semibold">Categories</h2>
 					{categories.map((category: string) => (
 						<div
 							key={category}
@@ -121,7 +149,7 @@ function Feed() {
 					))}
 				</div>
 				<div>
-					<h2 className="text-lg">Price</h2>
+					<h2 className="text-lg font-semibold">Price</h2>
 					<div className="flex flex-row justify-between items-center space-x-4">
 						<input
 							type="number"
@@ -144,10 +172,41 @@ function Feed() {
 						/>
 					</div>
 				</div>
+				<div>
+					<h2 className="text-lg font-semibold">Sort</h2>
+					<div
+						onClick={() => setShowDropdown(!showDropdown)}
+						className="p-2 rounded-md flex flex-row justify-between items-center border border-primary_lighter"
+					>
+						{sort}
+						{showDropdown ? (
+							<FaChevronUp />
+						) : (
+							<FaChevronDown />
+						)}
+					</div>
+					<div>
+						{showDropdown &&
+							sorts.map((c, i) => (
+								<div
+									key={c}
+									className={`p-2 ${c === sort ? "bg-slate-200" : "bg-white"
+										} border-[0.5px] border-b-slate-200 ${i === categories.length - 1 ? "rounded-b-md" : ""} ${i === 0 ? "rounded-t-md" : ""} shadow-2xl select-none`}
+									onClick={() => {
+										setSort(c);
+										setShowDropdown(false);
+									}}
+								>
+									{c}
+								</div>
+							))}
+					</div>
+				</div>
 			</div>
 			<div className="col-span-3 row-span-5 overflow-y-scroll grid grid-cols-3 auto-rows-max gap-4 px-4">
 				{listings
 					.filter((listing) => handleFilter(listing))
+					.sort((a, b) => handleSort(a, b))
 					.map((listing) => {
 						return (
 							<ListingPreview
