@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
-import Home from "./pages/LandingPage/Home";
+import Home from "./pages/Home";
 import Feed from "./pages/Feed";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";

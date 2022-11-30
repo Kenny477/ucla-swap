@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi";
 import { NavLink } from "react-router-dom";
-import { ImageWithPreview, Listing } from "../types";
+import { conditions } from "../../pages/NewListing";
+import { ImageWithPreview, Listing } from "../../types";
 
 function ListingPreview({ listing }: { listing: Listing }) {
 	const [liked, setLiked] = useState(false);
@@ -59,6 +60,9 @@ function ListingPreview({ listing }: { listing: Listing }) {
 			<NavLink to={`/listing/${listing.id}`}>
 				<h1 className="text-lg font-bold">{listing.title}</h1>
 				<p className="text-md font-bold">${listing.price}</p>
+				<p className="col-span-4 text-lg font-semibold">{
+					conditions.find((c) => c.rating === listing.condition)?.name
+				}</p>
 				<img className="row-span-1 aspect-square w-full object-contain" alt={image.name} src={image.preview} />
 			</NavLink>
 			<div className="grid grid-cols-6">

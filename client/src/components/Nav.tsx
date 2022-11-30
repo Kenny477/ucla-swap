@@ -16,11 +16,11 @@ function Nav({ authenticated }: { authenticated: boolean }) {
 		<div className="flex flex-row justify-between items-center h-20 px-20 bg-primary text-white">
 			<NavLink
 				to={authenticated ? "/feed" : "/"}
-				className="text-xl font-bold"
+				className="text-2xl font-bold"
 			>
 				UCLA Swap
 			</NavLink>
-			<div className="flex flex-row space-x-4 text-lg">
+			<div className="flex flex-row space-x-4 text-xl">
 				{authenticated ? (
 					<>
 						<NavLink to="/feed">Feed</NavLink>

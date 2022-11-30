@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import axios from "axios";
+import { useState } from "react";
+import { useCookies } from "react-cookie";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Login() {
 	const [email, setEmail] = useState("");
@@ -45,8 +45,8 @@ function Login() {
 
 	return (
 		<div className="flex flex-col items-center justify-center h-full space-y-8">
-			<h1 className="text-xl">Login</h1>
-			<div className="flex flex-col space-y-4 text-lg">
+			<h1 className="text-2xl font-bold">Login</h1>
+			<div className="flex flex-col space-y-4 text-lg w-1/4">
 				<input
 					type="text"
 					placeholder="email"
@@ -69,10 +69,10 @@ function Login() {
 					Login
 				</button>
 				<div className="text-red-500">{error}</div>
-				<NavLink to="/signup" className="text-primary text-sm text-center">
+				<NavLink to="/signup" className="text-primary text-center">
 					Don't have an account? Signup here.
 				</NavLink>
-				<NavLink to="/forgot-password" className="text-primary text-sm text-center">
+				<NavLink to="/forgot-password" className="text-primary text-center">
 					Forgot password?
 				</NavLink>
 			</div>
