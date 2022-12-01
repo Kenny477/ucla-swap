@@ -1,14 +1,26 @@
 import axios from "axios";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { BsEye } from "react-icons/bs";
+import {BsEyeSlash} from "react-icons/bs";
 
 function Signup() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [showPassword, setShowPassword] = useState(false);
+	const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [error, setError] = useState("");
 
   const navigate = useNavigate();
+
+  const toggle = () => {
+	setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmation = () => {
+	setShowPasswordConfirmation(!showPasswordConfirmation);
+  };
 
 	async function signup() {
 		// Make a POST request to the server endpoint /auth/signup with the email and password
@@ -49,20 +61,34 @@ function Signup() {
 					onChange={(e) => setEmail(e.target.value)}
 					className="focus:outline-0 focus:border-black border-b"
 				/>
-				<input
-					type="password"
-					placeholder="password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-					className="focus:outline-0 focus:border-black border-b"
-				/>
-				<input
-					type="password"
-					placeholder="confirm password"
-					value={confirmPassword}
-					onChange={(e) => setConfirmPassword(e.target.value)}
-					className="focus:outline-0 focus:border-black border-b"
-				/>
+				<div  className="flex">
+					<input
+						type={showPassword ? "text" : "password"}
+						placeholder="password"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+						className="focus:outline-0 focus:border-black border-b grow"
+					/>
+					<button
+						type="button"
+						onClick={toggle}>
+							{showPassword ? <BsEyeSlash/> : <BsEye/>}
+					</button>
+				</div>
+				<div className="flex">
+					<input
+						type={showPasswordConfirmation ? "text" : "password"}
+						placeholder="confirm password"
+						value={confirmPassword}
+						onChange={(e) => setConfirmPassword(e.target.value)}
+						className="focus:outline-0 focus:border-black border-b grow"
+					/>
+					<button
+						type="button"
+						onClick={toggleConfirmation}>
+							{showPasswordConfirmation ? <BsEyeSlash/> : <BsEye/>}
+					</button>
+				</div>
 				<button
 					type="button"
 					onClick={onSignup}
