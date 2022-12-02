@@ -1,6 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom';
 
+// Shown upon navigating to a non-existent directory/page
 function NotFound() {
   const location = useLocation();
 

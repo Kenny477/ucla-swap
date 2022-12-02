@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ImageUpload from "../components/Listing/ImageUpload";
 import { ImageWithPreview, Listing } from "../types";
 
+// Type checking the search and sort criteria
 interface FormErrors {
 	title?: string;
 	description?: string;
@@ -15,6 +16,7 @@ interface FormErrors {
 	condition?: string;
 }
 
+// Allows user to check their matching descriptors
 export const conditions = [
 	{
 		name: "New",
@@ -118,6 +120,7 @@ function NewListing() {
 		setErrors(errors);
 	}, [title, description, price, category, images, condition, triedSubmit]);
 
+	// Internal workings after clicking Post
 	async function handlePost() {
 		setTriedSubmit(true);
 		if(Object.values(errors).some((error) => error)) return
@@ -150,6 +153,7 @@ function NewListing() {
 			});
 	}
 
+	// Allows user to import images via drag and drop or folder navigation
 	function addImages(newImages: ImageWithPreview[]) {
 		setImages(images => [...images, ...newImages]);
 	}

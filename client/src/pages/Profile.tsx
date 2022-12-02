@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import ListingPreview from '../components/Listing/ListingPreview';
 import { User } from '../types';
 
+// Shown upon clicking "Profile"
+// No image-setting function, default profile photo for now
 function Profile() {
   const [user, setUser] = useState<User>({} as User);
   const [feedType, setFeedType] = useState<'listings' | 'favorites'>('listings');
