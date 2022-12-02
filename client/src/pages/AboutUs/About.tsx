@@ -2,6 +2,7 @@ import LargeHero2 from "./LargeHero2";
 import HeroImage2 from "./HeroImage2";
 import Features2 from "./Features2";
 
+//Look into the fonts
 function About() { 
 	return (
 		<div>
