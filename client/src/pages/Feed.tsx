@@ -9,7 +9,9 @@ import { Listing } from "../types";
 
 type Sort = "Recent" | "Old" | "Price (Increasing)" | "Price (Decreasing)" | "Condition (Poor to New)" | "Condition (New to Poor)";
 
+// Shown upon login
 function Feed() {
+	// Search categories of listings
 	const categories: Listing["category"][] = [
 		"Books",
 		"Electronics",
@@ -18,6 +20,7 @@ function Feed() {
 		"Vehicles",
 		"Other",
 	];
+	// Sorting options
 	const sorts: Sort[] = [
 		"Recent",
 		"Old",
@@ -67,6 +70,7 @@ function Feed() {
 		return filter;
 	}
 
+	// Updates feed according to sort
 	function handleSort(a: Listing, b: Listing) {
 		switch (sort) {
 			case "Recent":

@@ -6,6 +6,7 @@ import Gallery from "../components/Listing/Gallery";
 import { ImageWithPreview, Listing as ListingType } from "../types";
 import { conditions } from "./NewListing";
 
+// Shown upon clicking a completed listing
 function Listing() {
 	const [listing, setListing] = useState<ListingType>({} as ListingType);
 	const [images, setImages] = useState<ImageWithPreview[]>([]);

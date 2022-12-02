@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { NavLink, useNavigate } from "react-router-dom";
 
+// Shown upon clicking Login
 function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
