@@ -27,6 +27,7 @@ const Features2 = () => {
             title: "Liam Meagher",
             description: "2nd Year Computer Science and Engineering Major",
             img: "/../../assets/images/Resized_58633679_oclc8g98jg.png",
+            //fix liam's message
           },
           item5:
           {
