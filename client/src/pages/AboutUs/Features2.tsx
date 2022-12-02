@@ -12,15 +12,15 @@ const Features2 = () => {
           },
           item2:
           {
-            title: "Caroline Uhhhhh",
+            title: "Caroline Debbarauh",
             description: "2nd Year Computer Science Major",
-            img: "/../../assets/images/engineer.png",
+            img: "/../../assets/images/1641258770208.jpeg",
           },
           item3:
           {
             title: "Gayathri Eleswarapu",
             description: "2nd Year Computer Science Major",
-            img: "/../../assets/images/engineer.png",
+            img: "/../../assets/images/1634062771149.jpeg",
           },
           item4:
           {
@@ -32,7 +32,7 @@ const Features2 = () => {
           {
             title: "Alan Michael",
             description: "2nd Year Computer Science Major",
-            img: "/../../assets/images/engineer.png",
+            img: "/../../assets/images/1665344873048.jpeg",
           },
 	};
 
