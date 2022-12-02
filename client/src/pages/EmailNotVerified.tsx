@@ -1,5 +1,6 @@
 import React from 'react'
 
+// Shown upon login to an account prior to email verification
 function EmailNotVerified() {
   return (
     <div className="flex flex-col items-center justify-center h-full space-y-8">

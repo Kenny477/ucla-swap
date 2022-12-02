@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+// Shown upon following the instructions sent after "Forgot Password?" completion
 function ResetPassword() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')

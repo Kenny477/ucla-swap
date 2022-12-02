@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
+// Shown upon successful email verification
 function EmailVerified() {
   return (
     <div className="flex flex-col items-center justify-center h-full space-y-8">

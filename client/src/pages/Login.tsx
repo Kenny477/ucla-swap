@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { BsEye } from "react-icons/bs";
 import {BsEyeSlash} from "react-icons/bs";
 
+// Shown upon clicking Login
 function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");

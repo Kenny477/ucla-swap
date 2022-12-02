@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { ImageWithPreview } from '../../types'
 
+// Organizes a set of images into viewable gallery
 function Gallery({ images }: { images: ImageWithPreview[] }) {
   const [index, setIndex] = useState(0)
 
