@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
-import AboutUs from "./pages/AboutUs/About"
+import About from "./pages/About"
 import Home from "./pages/Home";
 import Feed from "./pages/Feed";
 import Signup from "./pages/Signup";
@@ -45,7 +45,7 @@ function App() {
       <Route path="/" element={<NavLayout authenticated={authenticated} />}>
         <Route index element={<Home />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         {

@@ -32,7 +32,7 @@ function Nav({ authenticated }: { authenticated: boolean }) {
 					</>
 				) : (
 					<>
-						<NavLink to="/AboutUs">About Us</NavLink>
+						<NavLink to="/about">About Us</NavLink>
 						<NavLink to="/signup">Signup</NavLink>
 						<NavLink to="/login">Login</NavLink>
 					</>
