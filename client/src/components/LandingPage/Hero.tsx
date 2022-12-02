@@ -2,11 +2,12 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { mainHero } from "../../types";
 
+// Top half of the default page shown to users without an account
 function Hero() {
 	const mainHero: mainHero = {
 		title: "A marketplace",
 		subtitle: "for students by students",
-		description: "Buy and sell from your fellow Bruins! Sign up today to trade quickly and securely",
+		description: "Buy and sell from your fellow Bruins! Sign up today to trade quickly and securely.",
 		img: "/../../assets/images/students-upscaled.jpeg",
 		primaryAction: {
 			text: "Sign Up",

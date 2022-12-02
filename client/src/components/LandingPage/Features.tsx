@@ -4,6 +4,7 @@ import { TfiWrite } from 'react-icons/tfi'
 import { BsFillPersonPlusFill } from 'react-icons/bs'
 import { features } from '../../types';
 
+// Bottom half of the default page shown to users without an account
 const Features = () => {
   const feature: features = {
     title: "Trading Made Easy!",
