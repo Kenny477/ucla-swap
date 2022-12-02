@@ -10,9 +10,9 @@ export interface mainHero {
 }
 
 export interface mainHero2 {
-  img: string;
   title: string;
   subtitle: string;
+  textAlign: 'center';
 }
 
 export interface features {
