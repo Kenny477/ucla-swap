@@ -9,6 +9,12 @@ export interface mainHero {
     },
 }
 
+export interface mainHero2 {
+  img: string;
+  title: string;
+  subtitle: string;
+}
+
 export interface features {
     title: string,
     item1:

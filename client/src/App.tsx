@@ -45,9 +45,9 @@ function App() {
       <Route path="/" element={<NavLayout authenticated={authenticated} />}>
         <Route index element={<Home />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/aboutus" element={<AboutUs />} />
         {
           authenticated && (
             <>

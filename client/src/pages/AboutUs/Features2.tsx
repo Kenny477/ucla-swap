@@ -3,7 +3,7 @@ import { features2 } from '../../types';
 
 const Features2 = () => {
     const feature2: features2 = {
-        title: "Trading Made Easy!",
+        title: "Our Team:",
         item1:
           {
             title: "Kenneth Tang",

@@ -31,9 +31,9 @@ function Nav({ authenticated }: { authenticated: boolean }) {
 					</>
 				) : (
 					<>
+						<NavLink to="/AboutUs">AboutUs</NavLink>
 						<NavLink to="/signup">Signup</NavLink>
 						<NavLink to="/login">Login</NavLink>
-						<NavLink to="/AboutUs">AboutUs</NavLink>
 					</>
 				)}
 			</div>
