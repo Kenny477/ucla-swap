@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import { conditions } from "../../pages/NewListing";
 import { ImageWithPreview, Listing } from "../../types";
 
+// Retrieves listing information to display data to user
 function ListingPreview({ listing }: { listing: Listing }) {
 	const [liked, setLiked] = useState(false);
 	const [image, setImage] = useState<ImageWithPreview>({} as ImageWithPreview);
