@@ -26,7 +26,7 @@ const Features2 = () => {
           {
             title: "Liam Meagher",
             description: "2nd Year Computer Science and Engineering Major",
-            img: "/../../assets/images/engineer.png",
+            img: "/../../assets/images/Resized_58633679_oclc8g98jg.png",
           },
           item5:
           {
@@ -60,6 +60,7 @@ const Features2 = () => {
             />
           </div>
         </div>
+
         <div className={`flex flex-wrap flex-col-reverse sm:flex-row`}>
           <div className={`w-full sm:w-1/2 p-6`}>
             <img
@@ -77,6 +78,8 @@ const Features2 = () => {
               <p className={`text-gray-600 mb-8`}>{feature2.item2.description}</p>
             </div>
           </div>
+        </div>
+        <div>
           <div className={`flex flex-wrap`}>
           <div className={`w-5/6 sm:w-1/2 p-6 mt-20`}>
             <h3
@@ -86,13 +89,13 @@ const Features2 = () => {
             </h3>
             <p className={`text-gray-600`}>{feature2.item3?.description}</p>
           </div>
-          
           <div className={`w-full sm:w-1/2 p-6`}>
             <img
               src={feature2.item3.img}
               alt={feature2.item3.title}
             />
           </div>  
+        </div>
 
         <div className={`flex flex-wrap`}>
           <div className={`w-full sm:w-1/2 p-6`}>
@@ -111,14 +114,16 @@ const Features2 = () => {
           </div>
         </div>
 
-        <div className={`flex flex-wrap`}>
-          <div className={`w-5/6 sm:w-1/2 p-6 mt-20`}>
-            <h3
-              className={`text-3xl text-gray-800 font-bold leading-none mb-3`}
-            >
-              {feature2.item5?.title}
-            </h3>
-            <p className={`text-gray-600`}>{feature2.item5.description}</p>
+        <div className={`flex flex-wrap flex-col-reverse sm:flex-row`}>
+          <div className={`w-full sm:w-1/2 p-6 mt-20`}>
+            <div className={`align-middle`}>
+              <h3
+                className={`text-3xl text-gray-800 font-bold leading-none mb-3`}
+              >
+                {feature2.item5.title}
+              </h3>
+              <p className={`text-gray-600 mb-8`}>{feature2.item5.description}</p>
+            </div>
           </div>
           <div className={`w-full sm:w-1/2 p-6`}>
             <img
@@ -128,8 +133,7 @@ const Features2 = () => {
           </div>
         </div>
 
-        </div>
-        </div>
+      </div>
       </div>
     </section>
   );
