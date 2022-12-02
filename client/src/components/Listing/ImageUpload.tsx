@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { ImageWithPreview } from "../types";
+import { ImageWithPreview } from "../../types";
 
+// Allows user to upload image via drag and drop or folder navigation
 function ImageUpload({
 	addImages,
 }: {

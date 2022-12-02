@@ -2,6 +2,8 @@ import {
   IsNumber,
   IsString,
   Length,
+  Max,
+  Min,
   MinLength,
   ValidateNested,
 } from 'class-validator';
@@ -21,11 +23,28 @@ export class CreateListingDto {
   })
   description: string;
 
-  @IsNumber()
+  @IsNumber(
+    {},
+    {
+      message: 'Price must be a number',
+    },
+  )
   price: number;
 
-  @IsString()
+  @IsString(
+    { message: 'Category must be a string' },
+  )
   category: string;
+
+  @IsNumber(
+    {},
+    {
+      message: 'Condition must be a number',
+    }
+  )
+  @Min(0)
+  @Max(5)
+  condition: number;
 
   @ValidateNested()
   @Type(() => CreateUserDto)

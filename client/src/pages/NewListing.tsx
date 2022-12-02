@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import axios, { AxiosPromise } from "axios";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { Listing, ImageWithPreview } from "../types";
-import { FaAngleDown } from "react-icons/fa";
-import ImageUpload from "../components/ImageUpload";
+import ImageUpload from "../components/Listing/ImageUpload";
+import { ImageWithPreview, Listing } from "../types";
 
+// Type checking the search and sort criteria
 interface FormErrors {
 	title?: string;
 	description?: string;
@@ -14,6 +15,35 @@ interface FormErrors {
 	images?: string;
 	condition?: string;
 }
+
+// Allows user to check their matching descriptors
+export const conditions = [
+	{
+		name: "New",
+		description: "Never used with original packaging.",
+		rating: 5,
+	},
+	{
+		name: "Like New",
+		description: "No visible signs of wear.",
+		rating: 4,
+	},
+	{
+		name: "Good",
+		description: "Gently used with only minor flaws.",
+		rating: 3,
+	},
+	{
+		name: "Fair",
+		description: "Used but functional with signs of wear.",
+		rating: 2,
+	},
+	{
+		name: "Poor",
+		description: "Damaged with flaws that may affect usability.",
+		rating: 1,
+	},
+];
 
 function NewListing() {
 	const categories: Listing["category"][] = [
@@ -24,33 +54,6 @@ function NewListing() {
 		"Vehicles",
 		"Other",
 	];
-	const conditions = [
-		{
-			name: "New",
-			description: "Never used with original packaging.",
-			rating: 5,
-		},
-		{
-			name: "Like New",
-			description: "No visible signs of wear.",
-			rating: 4,
-		},
-		{
-			name: "Good",
-			description: "Gently used with only minor flaws.",
-			rating: 3,
-		},
-		{
-			name: "Fair",
-			description: "Used but functional with signs of wear.",
-			rating: 2,
-		},
-		{
-			name: "Poor",
-			description: "Damaged with flaws that may affect usability.",
-			rating: 1,
-		},
-	]
 
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
@@ -106,7 +109,6 @@ function NewListing() {
 	));
 
 	useEffect(() => {
-		if (!triedSubmit) return;
 		const errors = {
 			title: title ? "" : "Title is required",
 			description: description ? "" : "Description is required",
@@ -116,8 +118,9 @@ function NewListing() {
 			images: images.length ? "" : "At least one image is required",
 		}
 		setErrors(errors);
-	}, [title, description, price, category, images, triedSubmit]);
+	}, [title, description, price, category, images, condition, triedSubmit]);
 
+	// Internal workings after clicking Post
 	async function handlePost() {
 		setTriedSubmit(true);
 		if(Object.values(errors).some((error) => error)) return
@@ -127,6 +130,7 @@ function NewListing() {
 			description,
 			price,
 			category,
+			condition,
 		};
 		const res = await axios
 			.post(endpoint, data, {
@@ -149,6 +153,7 @@ function NewListing() {
 			});
 	}
 
+	// Allows user to import images via drag and drop or folder navigation
 	function addImages(newImages: ImageWithPreview[]) {
 		setImages(images => [...images, ...newImages]);
 	}
@@ -161,7 +166,7 @@ function NewListing() {
 				</div>
 				<div className="col-span-4 col-start-1 row-start-2 row-span-1 flex flex-col space-y-2">
 					<div className="flex flex-row items-center space-x-4"><label htmlFor="title">Title</label>
-						{errors.title && (
+						{errors.title && triedSubmit && (
 							<p className="text-red-500 text-sm">{errors.title}</p>
 						)}
 					</div>
@@ -169,7 +174,7 @@ function NewListing() {
 						type="text"
 						id="title"
 						name="title"
-						className={`w-full rounded-md p-2 ${errors.title ? "outline outline-red-500" : "focus:outline-none"}`}
+						className={`w-full rounded-md p-2 ${errors.title && triedSubmit ? "outline outline-red-500" : "focus:outline-none"}`}
 						value={title}
 						onChange={(e) => setTitle(e.target.value)}
 					/>
@@ -177,14 +182,14 @@ function NewListing() {
 				<div className="col-span-4 col-start-1 row-start-3 row-span-3 flex flex-col space-y-2">
 					<div className="flex flex-row items-center space-x-4">
 						<label htmlFor="description">Description</label>
-						{errors.description && (
+						{errors.description && triedSubmit && (
 							<p className="text-red-500 text-sm">{errors.description}</p>
 						)}
 					</div>
 					<textarea
 						name="description"
 						id="description"
-						className={`resize-none w-full h-full rounded-md p-2 ${errors.description ? "outline outline-red-500" : "focus:outline-none"}`}
+						className={`resize-none w-full h-full rounded-md p-2 ${errors.description && triedSubmit ? "outline outline-red-500" : "focus:outline-none"}`}
 						value={description}
 						onChange={(e) => setDescription(e.target.value)}
 					/>
@@ -192,30 +197,34 @@ function NewListing() {
 				<div className="col-span-4 col-start-1 row-span-1 row-start-6 flex flex-col space-y-2">
 					<div className="flex flex-row items-center space-x-4">
 						<label htmlFor="images">Images</label>
-						{errors.description && (
-							<p className="text-red-500 text-sm">{errors.description}</p>
+						{errors.images && triedSubmit && (
+							<p className="text-red-500 text-sm">{errors.images}</p>
 						)}
 					</div>
-					<div className={`bg-white rounded-lg ${errors.images ? "outline outline-red-500" : "focus:outline-none"}`}>
+					<div className={`bg-white rounded-lg ${errors.images && triedSubmit ? "outline outline-red-500" : "focus:outline-none"}`}>
 						<ImageUpload addImages={addImages} />
 					</div>
 				</div>
-				<div className="col-span-4 col-start-1 row-span-1 row-start-7 grid grid-cols-5 grid-rows-2 gap-2">
+				<div className="col-span-4 col-start-1 row-span-1 row-start-7 grid grid-cols-5 gap-2">
 					{thumbnails}
 				</div>
 				<div className="col-span-4 col-start-1 row-start-8 row-span-1 flex flex-col space-y-2">
 					<div className="flex flex-row items-center space-x-4">
 						<label htmlFor="category">Category</label>
-						{errors.category && (
+						{errors.category && triedSubmit && (
 							<p className="text-red-500 text-sm">{errors.category}</p>
 						)}
 					</div>
 					<div
 						onClick={() => setShowDropdown(!showDropdown)}
-						className={`bg-white p-2 rounded-md flex flex-row justify-between items-center ${errors.description ? "outline outline-red-500" : "focus:outline-none"}`}
+						className={`bg-white p-2 rounded-md flex flex-row justify-between items-center ${errors.description && triedSubmit ? "outline outline-red-500" : "focus:outline-none"}`}
 					>
 						{category ? category : "Select a category"}
-						<FaAngleDown />
+						{showDropdown ? (
+							<FaChevronUp />
+						) : (
+							<FaChevronDown />
+						)}
 					</div>
 					<div>
 						{showDropdown &&
@@ -223,7 +232,7 @@ function NewListing() {
 								<div
 									key={c}
 									className={`p-2 ${c === category ? "bg-slate-200" : "bg-white"
-										} border-[0.5px] border-b-slate-200 ${i === categories.length - 1 ? "rounded-b-md" : ""} ${i === 0 ? "rounded-t-md" : ""} shadow-2xl`}
+										} border-[0.5px] border-b-slate-200 ${i === categories.length - 1 ? "rounded-b-md" : ""} ${i === 0 ? "rounded-t-md" : ""} shadow-2xl select-none`}
 									onClick={() => {
 										setCategory(c);
 										setShowDropdown(false);
@@ -255,7 +264,7 @@ function NewListing() {
 				<div className="col-span-4 row-span-1 row-start-10">
 					<div className="flex flex-row items-center space-x-4">
 						<label htmlFor="condition">Condition</label>
-						{errors.condition && (
+						{errors.condition && triedSubmit && (
 							<p className="text-red-500 text-sm">{errors.condition}</p>
 						)}
 					</div>

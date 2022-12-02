@@ -1,16 +1,24 @@
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import axios from "axios";
+import { useState } from "react";
+import { useCookies } from "react-cookie";
+import { NavLink, useNavigate } from "react-router-dom";
+import { BsEye } from "react-icons/bs";
+import {BsEyeSlash} from "react-icons/bs";
 
+// Shown upon clicking Login
 function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [showPassword, setShowPassword] = useState(false);
 	const [error, setError] = useState("");
 
 	const navigate = useNavigate();
 
 	const [cookies, setCookie] = useCookies(["access_token"]);
+
+	const toggle = () => {
+		setShowPassword(!showPassword);
+	  };
 
 	async function onLogin() {
 		// Make a POST request to the server endpoint /users/signup with the email and password
@@ -45,8 +53,8 @@ function Login() {
 
 	return (
 		<div className="flex flex-col items-center justify-center h-full space-y-8">
-			<h1 className="text-xl">Login</h1>
-			<div className="flex flex-col space-y-4 text-lg">
+			<h1 className="text-2xl font-bold">Login</h1>
+			<div className="flex flex-col space-y-4 text-lg w-1/4">
 				<input
 					type="text"
 					placeholder="email"
@@ -54,13 +62,20 @@ function Login() {
 					onChange={(e) => setEmail(e.target.value)}
 					className="focus:outline-0 focus:border-black border-b"
 				/>
-				<input
-					type="password"
-					placeholder="password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-					className="focus:outline-0 focus:border-black border-b"
-				/>
+				<div className="flex">
+					<input
+						type={showPassword ? "text" : "password"}
+						placeholder="password"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+						className="focus:outline-0 focus:border-black border-b grow"
+					/>
+					<button
+						type="button"
+						onClick={toggle}>
+							{showPassword ? <BsEyeSlash/> : <BsEye/>}
+					</button>
+				</div>
 				<button
 					type="button"
 					onClick={onLogin}
@@ -69,10 +84,10 @@ function Login() {
 					Login
 				</button>
 				<div className="text-red-500">{error}</div>
-				<NavLink to="/signup" className="text-primary text-sm text-center">
+				<NavLink to="/signup" className="text-primary text-center">
 					Don't have an account? Signup here.
 				</NavLink>
-				<NavLink to="/forgot-password" className="text-primary text-sm text-center">
+				<NavLink to="/forgot-password" className="text-primary text-center">
 					Forgot password?
 				</NavLink>
 			</div>

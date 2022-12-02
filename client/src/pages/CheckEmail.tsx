@@ -1,5 +1,6 @@
 import React from 'react'
 
+// Shown upon account creation, requesting email verification
 function CheckEmail() {
   return (
     <div className="flex flex-col items-center justify-center h-full space-y-8">

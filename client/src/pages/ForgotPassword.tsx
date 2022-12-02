@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react'
 
+// Shown upon clicking "Forgot Password?" on the login screen
 function ForgotPassword() {
 
   const [email, setEmail] = useState('')
