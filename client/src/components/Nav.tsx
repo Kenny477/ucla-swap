@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { NavLink, useNavigate } from "react-router-dom";
 
+// Allows navigation fuction between Feed, Profile, Logout, Signup, and Login
 function Nav({ authenticated }: { authenticated: boolean }) {
 	const [cookies, setCookie, removeCookie] = useCookies();
 
