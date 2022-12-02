@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
+// Shown upon clicking "Signup"
 function Signup() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
