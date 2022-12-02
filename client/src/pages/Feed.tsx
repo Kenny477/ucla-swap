@@ -7,7 +7,7 @@ import ListingPreview from "../components/Listing/ListingPreview";
 import { debounce } from "lodash";
 import { Listing } from "../types";
 
-type Sort = "Recent" | "Old" | "Price (ascending)" | "Price (descending)" | "Condition (ascending)" | "Condition (descending)";
+type Sort = "Recent" | "Old" | "Price (Increasing)" | "Price (Decreasing)" | "Condition (Poor to New)" | "Condition (New to Poor)";
 
 function Feed() {
 	const categories: Listing["category"][] = [
@@ -21,10 +21,10 @@ function Feed() {
 	const sorts: Sort[] = [
 		"Recent",
 		"Old",
-		"Price (ascending)",
-		"Price (descending)",
-		"Condition (ascending)",
-		"Condition (descending)",
+		"Price (Increasing)",
+		"Price (Decreasing)",
+		"Condition (Poor to New)",
+		"Condition (New to Poor)",
 	]
 	const [selected, setSelected] = useState<{ [key: string]: boolean }>(
 		categories.reduce((acc, curr) => ({ ...acc, [curr]: true }), {})
@@ -73,13 +73,13 @@ function Feed() {
 				return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
 			case "Old":
 				return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
-			case "Price (ascending)":
+			case "Price (Increasing)":
 				return a.price - b.price;
-			case "Price (descending)":
+			case "Price (Decreasing)":
 				return b.price - a.price;
-			case "Condition (ascending)":
+			case "Condition (Poor to New)":
 				return a.condition - b.condition;
-			case "Condition (descending)":
+			case "Condition (New to Poor)":
 				return b.condition - a.condition;
 		}
 	}
